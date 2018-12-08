@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8bde7883b120486cb0c2e88d54acbc21" Name="Diagram1">
+        <EntityTypeShape EntityType="PostServiceModel.Log" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostServiceModel.Message" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostServiceModel.MessagePlaceHolder" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostServiceModel.Role" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostServiceModel.sysdiagram" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostServiceModel.User" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostServiceModel.Users_Messages_Mapped" Width="1.5" PointX="7.5" PointY="3" IsExpanded="true" />
+        <AssociationConnector Association="PostServiceModel.FK_Logs_To_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PostServiceModel.FK_Message_To_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PostServiceModel.FK_User_Messages_Mappe_To_Messages" ManuallyRouted="false" />
+        <AssociationConnector Association="PostServiceModel.FK_User_Messages_Mappe_To_MessagePlaceHolders" ManuallyRouted="false" />
+        <AssociationConnector Association="PostServiceModel.FK_Users_To_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="PostServiceModel.FK_User_Messages_Mappe_To_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

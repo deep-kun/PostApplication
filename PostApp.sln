@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccesLayer", "DataAccesLayer\DataAccesLayer.csproj", "{8D4E204F-55FB-4870-9C2B-62513FDE2741}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{7E091F57-262B-4BD6-98F0-0FD1AEAE7ED2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csproj", "{DD063B19-BDB7-4682-87FC-2F968C456D45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D4E204F-55FB-4870-9C2B-62513FDE2741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D4E204F-55FB-4870-9C2B-62513FDE2741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D4E204F-55FB-4870-9C2B-62513FDE2741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D4E204F-55FB-4870-9C2B-62513FDE2741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E091F57-262B-4BD6-98F0-0FD1AEAE7ED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E091F57-262B-4BD6-98F0-0FD1AEAE7ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E091F57-262B-4BD6-98F0-0FD1AEAE7ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E091F57-262B-4BD6-98F0-0FD1AEAE7ED2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD063B19-BDB7-4682-87FC-2F968C456D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD063B19-BDB7-4682-87FC-2F968C456D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD063B19-BDB7-4682-87FC-2F968C456D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD063B19-BDB7-4682-87FC-2F968C456D45}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A569AF5-5A67-4B0E-BF01-38D347910922}
+	EndGlobalSection
+EndGlobal
