@@ -1,90 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WebApp.Models;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Cors;
 using DataAccesLayer;
-using DataAccesLayer.Model;
 
 namespace WebApp.Controllers
 {
-    [AllowAnonymous]
-    public class AuthController : Controller
+    [RoutePrefix("api/auth")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class AuthController : ApiController
     {
-        UserRepositiry ur = new UserRepositiry();
-        // GET: Auth
-        public ActionResult Index()
-        {
-            return View();
-        }
+        private IUserRepositiry ur = new UserRepositiry();
 
-        [HttpGet]
-        public ActionResult LogIn()
+        // GET: api/Auth
+        [Route("")]
+        public IEnumerable<string> Get()
         {
-            return View();
-        }
-
-        public ActionResult LogIn(LogInModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            int id = ur.GetUserByLoginPassword(model.Login,model.Password);
-            if (id >= 1)
-            {
-                var identity = new ClaimsIdentity(new[] {
-                new Claim(ClaimTypes.Name, model.Login),
-                new Claim(ClaimTypes.NameIdentifier, id.ToString())
-            },
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, "Name"),
+                    new Claim(ClaimTypes.NameIdentifier, "1")},
                     "ApplicationCookie");
 
-                var ctx = Request.GetOwinContext();
-                var authManager = ctx.Authentication;
-
-                authManager.SignIn(identity);
-
-                return RedirectToAction("Index", "Mail");
-
-            }
-
-            // user authN failed
-            ModelState.AddModelError("", "Invalid email or password");
-            return View();
-        }
-
-        public ActionResult LogOut()
-        {
             var ctx = Request.GetOwinContext();
             var authManager = ctx.Authentication;
+            authManager.SignIn(identity);
 
-            authManager.SignOut("ApplicationCookie");
-            return RedirectToAction("index", "Mail");
+            var r = HttpContext.Current.Request;
+
+            return new string[] { "value1", "value2" };
         }
-        public ActionResult Regisiter()
+
+        // GET: api/Auth/5
+        [Route("{id}")]
+        public string Get(int id)
         {
-            return View();
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var uid = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            return "value";
         }
-        [HttpPost]
-        public ActionResult Regisiter(UserView userView)
+
+        // POST: api/Auth
+        public void Post([FromBody]string value)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(userView);
-            }
-            var u = new User
-            {
-                Login = userView.Login,
-                Name = userView.Name,
-                Password = userView.Password,
-                Role = 1
-            };
-            ur.RegisterUser(u);
-            ViewBag.Status= "You have been registered";
-            return RedirectToAction("LogIn");
+        }
+
+        // PUT: api/Auth/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE: api/Auth/5
+        public void Delete(int id)
+        {
         }
     }
 }

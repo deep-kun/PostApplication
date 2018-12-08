@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace DataAccesLayer
 {
-    public class UserRepositiry
+    public class UserRepositiry : IUserRepositiry
     {
         string cons = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=PostService;Integrated Security=yes";
 
