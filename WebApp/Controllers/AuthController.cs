@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using DataAccesLayer;
+using DataAccesLayer.Model;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -46,8 +48,24 @@ namespace WebApp.Controllers
         }
 
         // POST: api/Auth
-        public void Post([FromBody]string value)
+        [Route("")]
+        [HttpPost]
+        public void Post(UserView userView)
         {
+            if (!ModelState.IsValid)
+            {
+                //return View(userView);
+            }
+            var u = new User
+            {
+                Login = userView.Login,
+                Name = userView.Name,
+                Password = userView.Password,
+                Role = 1
+            };
+            ur.RegisterUser(u);
+            //ViewBag.Status = "You have been registered";
+            //return RedirectToAction("LogIn");
         }
 
         // PUT: api/Auth/5
