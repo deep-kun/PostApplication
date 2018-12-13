@@ -49,6 +49,16 @@ namespace WebApp.Controllers
             return "value";
         }
 
+        [Route("/singout")]
+        [HttpGet]
+        public void SingOut()
+        {
+            var ctx = Request.GetOwinContext();
+            var authManager = ctx.Authentication;
+
+            authManager.SignOut("ApplicationCookie");
+        }
+
         [Route("log")]
         [HttpPost]
         public IHttpActionResult LoActionResult(LogInModel model)

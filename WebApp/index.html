@@ -3,26 +3,23 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Single Page Application</title>
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
 <body>
-    <div id="app"></div>
-
-<div class="navbar navbar-inverse">
-    <h1 style="color: aliceblue; ">Post app</h1>
-    <div id="NoAuth" style="float:right">
-        <button onclick="show('login')" class="btn btn-primary">Log</button>
-        <button onclick="show('register')" class="btn btn-primary">Register</button>
+    <div class="navbar navbar-inverse">
+        <h1 style="color: aliceblue; ">Post app</h1>
+        <div id="NoAuth" style="float: right;">
+            <button onclick="show('login')" class="btn btn-primary">Log</button>
+            <button onclick="show('register')" class="btn btn-primary">Register</button>
+        </div>
+        <div id="authed" style="display:none">
+            <button onclick="show('compose')" class="btn btn-primary">Compose</button>
+            <button onclick="singout()" class="btn btn-primary">Sing Out</button>
+        </div>
     </div>
-    <div id="authed" style="float:right">
-        <button onclick="show('compose')" class="btn btn-primary">Compose</button>
-    </div>
-</div>
 
     <!-- reg form-->
     <div id="register" style="display:none">
@@ -37,88 +34,92 @@ object.Name = document.getElementById('regName').value;
 object.Login = document.getElementById('regUser').value;
 object.Password = document.getElementById('regPass').value;
 console.log(object);
-HttpRequest('Auth/reg', 'post', object, 'register');"
+HttpRequest('Auth/reg', 'post', object, 'register');
+    "
                     class="btn btn-primary">
                 Register
             </button>
         </div>
     </div>
+    
 
 
-    <!-- log form-->
-<div id="login" style="display:none">
-    <h3>Login form</h3>
-    <div class="form-group">
-        <input id="logUser" class="form-control" type="text" placeholder="Login">
-        <input id="logPass" class="form-control" type="text" placeholder="Password">
-        <button onclick="
+<!-- log form-->
+    <div id="login" style="display:block">
+        <h3>Login form</h3>
+        <div class="form-group">
+            <input id="logUser" class="form-control" type="text" placeholder="Login">
+            <input id="logPass" class="form-control" type="text" placeholder="Password">
+            <button onclick="
 var object = new Object();
 object.Login = document.getElementById('logUser').value;
 object.Password = document.getElementById('logPass').value;
 console.log(object);
 HttpRequest('Auth/log', 'post', object, 'login');
 "
-                class="btn btn-primary">
-            Login
-        </button>
+                    class="btn btn-primary">
+                Login
+            </button>
+        </div>
     </div>
-</div>
     
 
+
 <!-- compose form-->
-<div id="compose" style="display:none">
-    <h3>Login form</h3>
-    <div class="form-group">
-        <input id="comUser" class="form-control" type="text" placeholder="reciver">
-        <input id="comSubject" class="form-control" type="text" placeholder="Subject">
-        <input id="comText" class="form-control" type="text" placeholder="body">
-        <button onclick="
+    <div id="compose" style="display:none">
+        <h3>Login form</h3>
+        <div class="form-group">
+            <input id="comUser" class="form-control" type="text" placeholder="reciver">
+            <input id="comSubject" class="form-control" type="text" placeholder="Subject">
+            <input id="comText" class="form-control" type="text" placeholder="body">
+            <button onclick="
 var object = new Object();
 object.Receiver = document.getElementById('comUser').value;
 object.Subject = document.getElementById('comSubject').value;
 object.Body = document.getElementById('comText').value;
 console.log(object);
-HttpRequest('Mail/', 'post', object, 'compose');
+HttpRequest('Mail/send', 'post', object, 'compose');
 "
-                class="btn btn-primary">
-            Send
-        </button>
+                    class="btn btn-primary">
+                Send
+            </button>
+        </div>
     </div>
-</div>
-    
     
 
-<table id="myTable" style="width: 100%;">
-    <tr>
-        <th>Date</th>
-        <th>Subject</th>
-        <th>IsRead</th>
-        <th>IsStared</th>
-        <th>Author</th>
-        <th>Read</th>
-    </tr>
-</table>
-    
 
-<div id="msgView">
-    <div id="sub" class="panel panel-primary">Text</div>
+<!-- msg view-->
+    <table id="myTable" style="width: 100%;">
+        <tr>
+            <th>Date</th>
+            <th>Subject</th>
+            <th>IsRead</th>
+            <th>IsStared</th>
+            <th>Author</th>
+            <th>Read</th>
+        </tr>
+    </table>
+
+
+
+    <!-- msg view-->
+<div id="msgView" style="display: none">
+    <button onclick="show('myTable');show('msgView'); load();" class="btn">Back to all mesages</button>
+    <div id="Subject" class="panel panel-primary">Text</div>
     <div id="Date" class="panel panel-primary">Text</div>
     <div id="Author" class="panel panel-primary">Text</div>
     <div id="Body" class="panel panel-primary">Text</div>
-
 </div>
 
-<button onclick="load()">load</button>
+
+<button onclick="load();">load</button>
 
 
-<script >
-
-        this.rootElem = document.getElementById('app');
-
-    function show(node) {
-         if (node === null) {
-            return;
-           }
+    <script>
+        function show(node) {
+            if (node === null) {
+                return;
+            }
             var n = document.getElementById(node.toString());
             if (n.style.display === "none") {
                 n.style.display = "block";
@@ -127,10 +128,14 @@ HttpRequest('Mail/', 'post', object, 'compose');
             }
         }
 
-    
-
         function load() {
+            console.log("load");
             var table = document.getElementById("myTable");
+            var tableRows = table.getElementsByTagName('tr');
+            var rowCount = tableRows.length;
+            for (var x=rowCount-1; x>0; x--) {
+                elmtTable.removeChild(tableRows[x]);
+            }
             var Http = new XMLHttpRequest();
             var url = "http://localhost:51368/api/" + "Mail/";
             Http.open('get', url, true);
@@ -139,11 +144,10 @@ HttpRequest('Mail/', 'post', object, 'compose');
 
             Http.onload = () => {
                 var json = JSON.parse(Http.responseText);
-
                 for (var i = 0; i < json.length; i++) {
                     var row = table.insertRow(1);
 
-                    var date = row.insertCell(0);
+                    var date = row.insertCell(0);   
                     var subject = row.insertCell(1);
                     var IsRead = row.insertCell(2);
                     var IsStared = row.insertCell(3);
@@ -155,7 +159,7 @@ HttpRequest('Mail/', 'post', object, 'compose');
                     IsRead.innerHTML = json[i].IsRead;
                     IsStared.innerHTML = json[i].IsStared;
                     Author.innerHTML = json[i].Author;
-                    Link.innerHTML = '<button class="btn btn-success" onClick="see(' + json[i].MessageId.toString() +')">Read this</button>';
+                    Link.innerHTML = '<button class="btn btn-success" onClick="see(' + json[i].MessageId.toString() + ');">Read this</button>';
                 }
 
                 console.log(Http.responseText);
@@ -163,22 +167,24 @@ HttpRequest('Mail/', 'post', object, 'compose');
         }
 
         function see(id) {
+            console.log("see" + id);
+            show('myTable');
+            show('msgView');
+            var Http = new XMLHttpRequest();
+            var url = "http://localhost:51368/api/" + "Mail/";
+            Http.open('get', url + id.toString(), true);
+            Http.setRequestHeader('Content-Type', 'application/json');
+            Http.send();
 
-                var Http = new XMLHttpRequest();
-                var url = "http://localhost:51368/api/" + "Mail/";
-                Http.open('get', url, true);
-                Http.setRequestHeader('Content-Type', 'application/json');
-                Http.send(id.toString());
+            Http.onload = () => {
 
-                Http.onload = () => {
-
-                    var json = JSON.parse(Http.responseText);
-                    document.getElementById('Body').innerHTML = json.Body;
-
-                }
-
-            console.log(id);
-         }
+                var json = JSON.parse(Http.responseText);
+                document.getElementById('Subject').innerHTML = json.Subject;
+                document.getElementById('Date').innerHTML = json.Date;
+                document.getElementById('Author').innerHTML = json.Author;
+                document.getElementById('Body').innerHTML = json.Body;
+            }
+        }
 
         function HttpRequest(controller, method, object, caller) {
             var Http = new XMLHttpRequest();
@@ -188,15 +194,37 @@ HttpRequest('Mail/', 'post', object, 'compose');
             Http.send(JSON.stringify(object));
 
             Http.onload = () => {
-                if (Http.status == 400) {
+                if (Http.status == 400 || Http.status == 500) {
                     var m = JSON.parse(Http.responseText);
                     ErrorHappens(m.Message);
                     return null;
                 }
                 show(caller);
+                if (caller.toString() === 'login' || caller.toString() === 'register' ) {
+                    show('NoAuth');
+                    show('authed');
+                }
+
                 //console.log(JSON.parse(Http.responseText).length);
                 return JSON.parse(Http.responseText);
             }
+        }
+
+        function singout() {
+            var Http = new XMLHttpRequest();
+            var url = "http://localhost:51368/api/auth/singout";
+            Http.open('get', url, true);
+            Http.setRequestHeader('Content-Type', 'application/json');
+            Http.send();
+
+            Http.onload = () => {
+                show('MyTable');
+                show('NoAuth');
+                show('authed');
+                //console.log(JSON.parse(Http.responseText).length);
+                return JSON.parse(Http.responseText);
+            }
+
         }
 
         function ErrorHappens(context) {
