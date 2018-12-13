@@ -1,6 +1,0 @@
-C:\Users\deep\source\repos\PostApp\DataAccesLayer\bin\Debug\DataAccesLayer.dll
-C:\Users\deep\source\repos\PostApp\DataAccesLayer\bin\Debug\DataAccesLayer.pdb
-C:\Users\deep\source\repos\PostApp\DataAccesLayer\obj\Debug\DataAccesLayer.csproj.CoreCompileInputs.cache
-C:\Users\deep\source\repos\PostApp\DataAccesLayer\obj\Debug\DataAccesLayer.dll
-C:\Users\deep\source\repos\PostApp\DataAccesLayer\obj\Debug\DataAccesLayer.pdb
-C:\Users\deep\source\repos\PostApp\DataAccesLayer\obj\Debug\DataAccesLayer.csprojAssemblyReference.cache
