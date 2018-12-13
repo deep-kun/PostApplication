@@ -46,6 +46,10 @@ create table Users_Messages_Mapped (
 	CONSTRAINT FK_User_Messages_Mappe_To_MessagePlaceHolders FOREIGN KEY (PlaceHolderId) REFERENCES MessagePlaceHolders (PlaceHolderId)
 );
 
+  
+  insert into MessagePlaceHolders values('msg')
+  insert into Roles values('admin')
+  
 
 
 --drop table Users_Messages_Mapped

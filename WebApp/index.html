@@ -13,53 +13,117 @@
 <body>
     <div id="app"></div>
 
-    <div id="register" style="visibility: hidden">
-        <b>register form</b>
+<div class="navbar navbar-inverse">
+    <h1 style="color: aliceblue; ">Post app</h1>
+    <div id="NoAuth" style="float:right">
+        <button onclick="show('login')" class="btn btn-primary">Log</button>
+        <button onclick="show('register')" class="btn btn-primary">Register</button>
+    </div>
+    <div id="authed" style="float:right">
+        <button onclick="show('compose')" class="btn btn-primary">Compose</button>
+    </div>
+</div>
+
+    <!-- reg form-->
+    <div id="register" style="display:none">
+        <h3>Register form</h3>
         <div class="form-group">
             <input id="regName" class="form-control" type="text" placeholder="Name">
-            <input id="regUser" class="form-control" type="text" placeholder="User">
-            <input id="regPass" class="form-control" type="text" placeholder="Password">
+            <input id="regUser" class="form-control" type="text" placeholder="Login">
+            <input id="regPass" class="form-control" type="password" placeholder="Password">
             <button onclick="
 var object = new Object();
 object.Name = document.getElementById('regName').value;
-object.User = document.getElementById('regUser').value;
+object.Login = document.getElementById('regUser').value;
 object.Password = document.getElementById('regPass').value;
 console.log(object);
-HttpRequest('Auth','post',object);
-"></button>
+HttpRequest('Auth/reg', 'post', object, 'register');"
+                    class="btn btn-primary">
+                Register
+            </button>
         </div>
     </div>
 
-    <button onclick="load()">Load</button>
-    <button onclick="show('register')">register</button>
-    <script>
+
+    <!-- log form-->
+<div id="login" style="display:none">
+    <h3>Login form</h3>
+    <div class="form-group">
+        <input id="logUser" class="form-control" type="text" placeholder="Login">
+        <input id="logPass" class="form-control" type="text" placeholder="Password">
+        <button onclick="
+var object = new Object();
+object.Login = document.getElementById('logUser').value;
+object.Password = document.getElementById('logPass').value;
+console.log(object);
+HttpRequest('Auth/log', 'post', object, 'login');
+"
+                class="btn btn-primary">
+            Login
+        </button>
+    </div>
+</div>
+    
+
+<!-- compose form-->
+<div id="compose" style="display:none">
+    <h3>Login form</h3>
+    <div class="form-group">
+        <input id="comUser" class="form-control" type="text" placeholder="reciver">
+        <input id="comSubject" class="form-control" type="text" placeholder="Subject">
+        <input id="comText" class="form-control" type="text" placeholder="body">
+        <button onclick="
+var object = new Object();
+object.Receiver = document.getElementById('comUser').value;
+object.Subject = document.getElementById('comSubject').value;
+object.Body = document.getElementById('comText').value;
+console.log(object);
+HttpRequest('Mail/', 'post', object, 'compose');
+"
+                class="btn btn-primary">
+            Send
+        </button>
+    </div>
+</div>
+    
+    
+
+
+<script>
 
         this.rootElem = document.getElementById('app');
 
-        var s = document.location.hostname.toString();
-        function load() {
-        }
-
         function show(node) {
             var n = document.getElementById(node.toString());
-            if (n.style.visibility === "visible") {
-                n.style.visibility = "hidden";
+            if (n.style.display === "none") {
+                n.style.display = "block";
             } else {
-                n.style.visibility = "visible";
+                n.style.display = "none";
             }
         }
 
-        function HttpRequest(controller, method, object) {
+
+        function HttpRequest(controller, method, object, caller) {
             var Http = new XMLHttpRequest();
-            //var url='https://jsonplaceholder.typicode.com/posts';
             var url = "http://localhost:51368/api/" + controller;
             Http.open(method, url, true);
             Http.setRequestHeader('Content-Type', 'application/json');
             Http.send(JSON.stringify(object));
-            Http.onreadystatechange = (e) => {
+
+            Http.onload = () => {
+                if (Http.status == 400) {
+                    var m = JSON.parse(Http.responseText);
+                    ErrorHappens(m.Message);
+                    return null;
+                }
+                show(caller);
                 console.log(Http.responseText);
                 return Http.responseText;
             }
+        }
+
+        function ErrorHappens(context) {
+            alert(context.toString());
         }
     </script>
 </body>

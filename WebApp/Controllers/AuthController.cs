@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.ModelBinding;
+using System.Web.Http.Results;
 using DataAccesLayer;
 using DataAccesLayer.Model;
 using WebApp.Models;
@@ -21,20 +25,18 @@ namespace WebApp.Controllers
 
         // GET: api/Auth
         [Route("")]
-        public IEnumerable<string> Get()
+        public IHttpActionResult Get()
         {
-            var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, "Name"),
-                    new Claim(ClaimTypes.NameIdentifier, "1")},
-                    "ApplicationCookie");
-
-            var ctx = Request.GetOwinContext();
-            var authManager = ctx.Authentication;
-            authManager.SignIn(identity);
-
-            var r = HttpContext.Current.Request;
-
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                int uid = Int32.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
         }
 
         // GET: api/Auth/5
@@ -47,14 +49,57 @@ namespace WebApp.Controllers
             return "value";
         }
 
-        // POST: api/Auth
-        [Route("")]
+        [Route("log")]
         [HttpPost]
-        public void Post(UserView userView)
+        public IHttpActionResult LoActionResult(LogInModel model)
         {
             if (!ModelState.IsValid)
             {
-                //return View(userView);
+                var stsBuilder = new StringBuilder();
+                foreach (var err in ModelState.Values)
+                {
+                    stsBuilder.Append(err.Errors.FirstOrDefault().ErrorMessage);
+                    stsBuilder.Append(Environment.NewLine);
+                }
+                return BadRequest(stsBuilder.ToString());
+            }
+
+            int id = ur.GetUserByLoginPassword(model.Login, model.Password);
+            if (id >= 1)
+            {
+                var identity = new ClaimsIdentity(new[] {
+                        new Claim(ClaimTypes.Name, model.Login),
+                        new Claim(ClaimTypes.NameIdentifier, id.ToString())
+                    },
+                    "ApplicationCookie");
+
+                var ctx = Request.GetOwinContext();
+                var authManager = ctx.Authentication;
+
+                authManager.SignIn(identity);
+
+                return Ok();
+
+            }
+
+            // user authN failed
+            return BadRequest("Wrong creadentials");
+        }
+
+        // POST: api/Auth
+        [Route("reg")]
+        [HttpPost]
+        public IHttpActionResult RegActionResult(UserView userView)
+        {
+            if (!ModelState.IsValid)
+            {
+                var stsBuilder = new StringBuilder();
+                foreach (var err in ModelState.Values)
+                {
+                    stsBuilder.Append(err.Errors.FirstOrDefault().ErrorMessage);
+                    stsBuilder.Append(Environment.NewLine);
+                }
+                return BadRequest(stsBuilder.ToString());
             }
             var u = new User
             {
@@ -64,8 +109,7 @@ namespace WebApp.Controllers
                 Role = 1
             };
             ur.RegisterUser(u);
-            //ViewBag.Status = "You have been registered";
-            //return RedirectToAction("LogIn");
+            return Ok();
         }
 
         // PUT: api/Auth/5
