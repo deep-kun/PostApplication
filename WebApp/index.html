@@ -88,18 +88,72 @@ HttpRequest('Mail/', 'post', object, 'compose');
     
     
 
+<table id="myTable" style="width: 100%;">
+    <tr>
+        <th>Date</th>
+        <th>Subject</th>
+        <th>IsRead</th>
+        <th>IsStared</th>
+        <th>Author</th>
+    </tr>
+</table>
+    
 
-<script>
+<button onclick="load()">load</button>
+
+
+<script >
 
         this.rootElem = document.getElementById('app');
 
-        function show(node) {
+    function show(node) {
+         if (node === null) {
+            return;
+           }
             var n = document.getElementById(node.toString());
             if (n.style.display === "none") {
                 n.style.display = "block";
             } else {
                 n.style.display = "none";
             }
+        }
+
+    
+
+        function load() {
+            var table = document.getElementById("myTable");
+
+            //var resp = HttpRequest('Mail/', 'get', '', null);
+
+            var Http = new XMLHttpRequest();
+            var url = "http://localhost:51368/api/" + "Mail/";
+            Http.open('get', url, true);
+            Http.setRequestHeader('Content-Type', 'application/json');
+            Http.send();
+
+            Http.onload = () => {
+                var json = JSON.parse(Http.responseText);
+
+                for (var i = 0; i < json.length; i++) {
+                    var row = table.insertRow(1);
+
+                    var date = row.insertCell(0);
+                    var subject = row.insertCell(1);
+                    var IsRead = row.insertCell(2);
+                    var IsStared = row.insertCell(3);
+                    var Author = row.insertCell(4);
+
+                    date.innerHTML = json[i].Date;
+                    subject.innerHTML = json[i].Date;
+                    IsRead.innerHTML = json[i].IsRead;
+                    IsStared.innerHTML = json[i].IsStared;
+                    Author.innerHTML = json[i].Author;
+                }
+
+                console.log(Http.responseText);
+            }
+
+           
         }
 
 
@@ -117,8 +171,8 @@ HttpRequest('Mail/', 'post', object, 'compose');
                     return null;
                 }
                 show(caller);
-                console.log(Http.responseText);
-                return Http.responseText;
+                //console.log(JSON.parse(Http.responseText).length);
+                return JSON.parse(Http.responseText);
             }
         }
 
