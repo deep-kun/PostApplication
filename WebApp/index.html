@@ -95,9 +95,18 @@ HttpRequest('Mail/', 'post', object, 'compose');
         <th>IsRead</th>
         <th>IsStared</th>
         <th>Author</th>
+        <th>Read</th>
     </tr>
 </table>
     
+
+<div id="msgView">
+    <div id="sub" class="panel panel-primary">Text</div>
+    <div id="Date" class="panel panel-primary">Text</div>
+    <div id="Author" class="panel panel-primary">Text</div>
+    <div id="Body" class="panel panel-primary">Text</div>
+
+</div>
 
 <button onclick="load()">load</button>
 
@@ -122,9 +131,6 @@ HttpRequest('Mail/', 'post', object, 'compose');
 
         function load() {
             var table = document.getElementById("myTable");
-
-            //var resp = HttpRequest('Mail/', 'get', '', null);
-
             var Http = new XMLHttpRequest();
             var url = "http://localhost:51368/api/" + "Mail/";
             Http.open('get', url, true);
@@ -142,20 +148,37 @@ HttpRequest('Mail/', 'post', object, 'compose');
                     var IsRead = row.insertCell(2);
                     var IsStared = row.insertCell(3);
                     var Author = row.insertCell(4);
+                    var Link = row.insertCell(5);
 
                     date.innerHTML = json[i].Date;
                     subject.innerHTML = json[i].Date;
                     IsRead.innerHTML = json[i].IsRead;
                     IsStared.innerHTML = json[i].IsStared;
                     Author.innerHTML = json[i].Author;
+                    Link.innerHTML = '<button class="btn btn-success" onClick="see(' + json[i].MessageId.toString() +')">Read this</button>';
                 }
 
                 console.log(Http.responseText);
             }
-
-           
         }
 
+        function see(id) {
+
+                var Http = new XMLHttpRequest();
+                var url = "http://localhost:51368/api/" + "Mail/";
+                Http.open('get', url, true);
+                Http.setRequestHeader('Content-Type', 'application/json');
+                Http.send(id.toString());
+
+                Http.onload = () => {
+
+                    var json = JSON.parse(Http.responseText);
+                    document.getElementById('Body').innerHTML = json.Body;
+
+                }
+
+            console.log(id);
+         }
 
         function HttpRequest(controller, method, object, caller) {
             var Http = new XMLHttpRequest();
