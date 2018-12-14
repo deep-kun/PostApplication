@@ -33,6 +33,11 @@ var object = new Object();
 object.Name = document.getElementById('regName').value;
 object.Login = document.getElementById('regUser').value;
 object.Password = document.getElementById('regPass').value;
+
+document.getElementById('regName').value = '';
+document.getElementById('regUser').value= '';
+document.getElementById('regPass').value= '';
+
 console.log(object);
 HttpRequest('Auth/reg', 'post', object, 'register');
     "
@@ -54,7 +59,11 @@ HttpRequest('Auth/reg', 'post', object, 'register');
 var object = new Object();
 object.Login = document.getElementById('logUser').value;
 object.Password = document.getElementById('logPass').value;
-console.log(object);
+
+document.getElementById('logUser').value = '';
+document.getElementById('logPass').value = '';
+
+    console.log(object);
 HttpRequest('Auth/log', 'post', object, 'login');
 "
                     class="btn btn-primary">
@@ -77,6 +86,13 @@ var object = new Object();
 object.Receiver = document.getElementById('comUser').value;
 object.Subject = document.getElementById('comSubject').value;
 object.Body = document.getElementById('comText').value;
+
+document.getElementById('comUser').value= '';
+document.getElementById('comSubject').value = '';
+document.getElementById('comText').value = '';
+
+
+
 console.log(object);
 HttpRequest('Mail/send', 'post', object, 'compose');
 "
@@ -134,7 +150,7 @@ HttpRequest('Mail/send', 'post', object, 'compose');
             var tableRows = table.getElementsByTagName('tr');
             var rowCount = tableRows.length;
             for (var x=rowCount-1; x>0; x--) {
-                elmtTable.removeChild(tableRows[x]);
+                table.removeChild(tableRows[x]);
             }
             var Http = new XMLHttpRequest();
             var url = "http://localhost:51368/api/" + "Mail/";
@@ -204,8 +220,6 @@ HttpRequest('Mail/send', 'post', object, 'compose');
                     show('NoAuth');
                     show('authed');
                 }
-
-                //console.log(JSON.parse(Http.responseText).length);
                 return JSON.parse(Http.responseText);
             }
         }
@@ -218,10 +232,10 @@ HttpRequest('Mail/send', 'post', object, 'compose');
             Http.send();
 
             Http.onload = () => {
-                show('MyTable');
+                console.log('sing out');
+                show('myTable');
                 show('NoAuth');
                 show('authed');
-                //console.log(JSON.parse(Http.responseText).length);
                 return JSON.parse(Http.responseText);
             }
 
@@ -230,6 +244,29 @@ HttpRequest('Mail/send', 'post', object, 'compose');
         function ErrorHappens(context) {
             alert(context.toString());
         }
+
+        document.onload = ready();
+
+        function ready() {
+            var Http = new XMLHttpRequest();
+            var url = "http://localhost:51368/api/" + "Auth/ami";
+            Http.open('get', url, true);
+            Http.setRequestHeader('Content-Type', 'application/json');
+            Http.send();
+            Http.onload = () => {
+                console.log(Http.status);
+                
+                if (Http.status == 401 || Http.status == 500) {
+                    var m = JSON.parse(Http.responseText);
+                    ErrorHappens(m.Message);
+                    return null;
+                    }
+                    show('NoAuth');
+                show('authed');
+                show('login');
+                }
+        }
+
     </script>
 </body>
 </html>

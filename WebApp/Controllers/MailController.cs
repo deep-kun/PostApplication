@@ -50,7 +50,7 @@ namespace WebApp.Controllers
         }
 
         // POST: api/Mail
-        [Route("/send")]
+        [Route("send")]
         [HttpPost]
         public IHttpActionResult Post([FromBody]SendedMessageView smv)
         {

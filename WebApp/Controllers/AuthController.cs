@@ -24,7 +24,8 @@ namespace WebApp.Controllers
         private IUserRepositiry ur = new UserRepositiry();
 
         // GET: api/Auth
-        [Route("")]
+        [Route("ami")]
+        [HttpGet]
         public IHttpActionResult Get()
         {
             try
@@ -49,7 +50,7 @@ namespace WebApp.Controllers
             return "value";
         }
 
-        [Route("/singout")]
+        [Route("singout")]
         [HttpGet]
         public void SingOut()
         {

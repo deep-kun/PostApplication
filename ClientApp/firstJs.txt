@@ -1,8 +1,0 @@
-function httpGet(theUrl)
-{
- var xml = new XMLHttpRequest();
-    xml.open( "GET", "http://localhost:51368/api/auth", false ); // false for synchronous request
-    xml.withCredentials = true;
-	xml.send( null );
-	return xml.responseText;
-}

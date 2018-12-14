@@ -199,12 +199,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="JsClient\Controller.js" />
     <Content Include="index.html" />
-    <Content Include="js\app.js" />
-    <Content Include="js\route.js" />
-    <Content Include="js\router.js" />
     <Content Include="JsClient\Model.js" />
-    <Content Include="views\about.html" />
-    <Content Include="views\home.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -221,7 +216,6 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Views1\login.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -229,19 +223,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views1\Web.config" />
-    <Content Include="Views1\_ViewStart.cshtml" />
-    <Content Include="Views1\Shared\Error.cshtml" />
-    <Content Include="Views1\Shared\_Layout.cshtml" />
-    <Content Include="Views1\Home\About.cshtml" />
-    <Content Include="Views1\Home\Contact.cshtml" />
-    <Content Include="Views1\Home\Index.cshtml" />
-    <Content Include="Views1\Auth\Index.cshtml" />
-    <Content Include="Views1\Auth\LogIn.cshtml" />
-    <Content Include="Views1\Mail\Index.cshtml" />
-    <Content Include="Views1\Mail\Read.cshtml" />
-    <Content Include="Views1\Mail\Create.cshtml" />
-    <Content Include="Views1\Auth\Regisiter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
