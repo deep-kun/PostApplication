@@ -12,7 +12,7 @@ namespace DataAccesLayer
     {
         string cons = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=PostService;Integrated Security=yes";
 
-        public int GetUserByLoginPassword(string login, string password)
+        public User GetUserByLoginPassword(string login, string password)
         {
             using (SqlConnection conn = new SqlConnection(cons))
             {
@@ -37,9 +37,9 @@ namespace DataAccesLayer
                     }
                     catch (Exception ex)
                     {
-                        return -1;
+                        return null;
                     }
-                    return user.UserId;
+                    return user;
                 }
             }
 
