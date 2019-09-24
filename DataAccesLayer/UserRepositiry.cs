@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlTypes;
 using System.Data.SqlClient;
 using System.Data;
 using DataAccesLayer.Model;
 using System.Diagnostics;
+using Microsoft.Extensions.Options;
 
 namespace DataAccesLayer
 {
     public class UserRepositiry : IUserRepositiry
     {
+        public UserRepositiry(SqlConnection sqlConnection)
+        {
+
+        }
         string cons = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=PostService;Integrated Security=yes";
 
         public User GetUserByLoginPassword(string login, string password)

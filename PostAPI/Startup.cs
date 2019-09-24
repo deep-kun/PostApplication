@@ -22,7 +22,7 @@ namespace PostAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddPostApp();
+            services.AddPostApp(Configuration);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
