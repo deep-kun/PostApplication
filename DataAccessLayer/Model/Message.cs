@@ -14,6 +14,5 @@ namespace DataAccessLayer.Model
         public bool IsRead { get; set; }
         public bool IsStared { get; set; }
         public string Author { get; set; }
-
     }
 }

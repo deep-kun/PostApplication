@@ -5,27 +5,27 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccesLayer;
-using DataAccesLayer.Model;
+using DataAccessLayer;
+using DataAccessLayer.Model;
 using Microsoft.IdentityModel.Tokens;
 
 namespace PostAPI.Auth
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
-        private static readonly string key = "KEY";
+        private static readonly string key = "KEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEY";
 
         JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-        private readonly IUserRepositiry userRepositiry;
+        private readonly IUserRepository userRepository;
 
-        public AuthService(IUserRepositiry userRepositiry)
+        public AuthService(IUserRepository userRepository)
         {
-            this.userRepositiry = userRepositiry;
+            this.userRepository = userRepository;
         }
 
         public User Authenticate(string userName, string password)
         {
-            var user = this.userRepositiry.GetUserByLoginPassword(userName, password);
+            var user = this.userRepository.GetUserByLoginPassword(userName, password);
             if (user == null)
             {
                 return null;

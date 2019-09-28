@@ -30,11 +30,11 @@ namespace DataAccessLayer
                     {
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         dataReader.Read();
-                        user.UserId = Int32.Parse(dataReader["UserId"].ToString());
+                        user.UserId = int.Parse(dataReader["UserId"].ToString());
                         user.Name = dataReader["UserName"].ToString();
                         user.Login = dataReader["UserLogin"].ToString();
                         user.Password = dataReader["Password"].ToString();
-                        user.Role = Int32.Parse(dataReader["RoleId"].ToString());
+                        user.Role = int.Parse(dataReader["RoleId"].ToString());
                     }
                     catch (Exception ex)
                     {
@@ -120,12 +120,12 @@ where Message.MessageId=@Id";
                     {
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         dataReader.Read();
-                        mb.MessageId = Int32.Parse(dataReader["MessageId"].ToString());
+                        mb.MessageId = int.Parse(dataReader["MessageId"].ToString());
                         mb.Subject = dataReader["Subject"].ToString();
                         mb.Date = (DateTime)dataReader["Date"];
                         mb.Body = dataReader["Body"].ToString();
                         mb.Author = dataReader["Author"].ToString();
-                        mb.ReciverId= Int32.Parse(dataReader["UserId"].ToString());
+                        mb.ReceiverId= int.Parse(dataReader["UserId"].ToString());
                     }
                     catch (Exception ex)
                     {

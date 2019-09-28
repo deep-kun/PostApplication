@@ -5,21 +5,25 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLayer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PostAPI.Auth;
 
 namespace PostAPI
 {
     public static class PostAppExtensions
     {
-        private static readonly string key = "KEY";
+        private static readonly string key = "KEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEY";
         public static void AddPostApp(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IAuthService, AuthService>();
 
             services.AddAuthentication(x =>
                 {
