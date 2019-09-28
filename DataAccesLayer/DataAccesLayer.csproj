@@ -40,12 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IUserRepositiry.cs" />
-    <Compile Include="Model\SendedMessage.cs" />
-    <Compile Include="UserRepositiry.cs" />
-    <Compile Include="Model\Message.cs" />
-    <Compile Include="Model\MessageBody.cs" />
-    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

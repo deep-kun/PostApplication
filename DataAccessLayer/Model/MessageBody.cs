@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccesLayer.Model
+namespace DataAccessLayer.Model
 {
-    public class Message
+    public class MessageBody
     {
         public int MessageId { get; set; }
-        public DateTime Date { get; set; }
         public string Subject { get; set; }
-        public bool IsRead { get; set; }
-        public bool IsStared { get; set; }
+        public DateTime Date { get; set; }
+        public string Body { get; set; }
         public string Author { get; set; }
-
+        public int ReciverId { get; set; }  
     }
 }
