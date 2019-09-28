@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlTypes;
-using System.Data.SqlClient;
 using System.Data;
-using DataAccesLayer.Model;
-using System.Diagnostics;
-using Microsoft.Extensions.Options;
+using System.Data.SqlClient;
+using DataAccessLayer.Model;
 
-namespace DataAccesLayer
+namespace DataAccessLayer
 {
-    public class UserRepositiry : IUserRepositiry
+    public class UserRepository : IUserRepository
     {
-        public UserRepositiry(SqlConnection sqlConnection)
+        public UserRepository()
         {
-
         }
         string cons = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=PostService;Integrated Security=yes";
 

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using DataAccesLayer.Model;
+using DataAccessLayer.Model;
 
-namespace DataAccesLayer
+namespace DataAccessLayer
 {
-    public interface IUserRepositiry
+    public interface IUserRepository
     {
         bool CheckUser(string nick);
         MessageBody GetMessageById(int id);
@@ -11,7 +11,7 @@ namespace DataAccesLayer
         User GetUserByLoginPassword(string login, string password);
         int RegisterUser(User u);
         void RemoveMsg(int id);
-        void SendMsg(SendedMessage sendedMessage);
+        void SendMsg(SendedMessage sentMessage);
         void SetMessageRead(int id);
     }
 }
