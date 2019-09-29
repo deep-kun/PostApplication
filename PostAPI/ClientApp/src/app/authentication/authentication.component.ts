@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {User} from '../model/user';
 
 @Component({
   selector: 'app-authentication',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./authentication.component.css']
 })
 export class AuthenticationComponent implements OnInit {
+
+  model = new User('', '');
 
   constructor() { }
 
