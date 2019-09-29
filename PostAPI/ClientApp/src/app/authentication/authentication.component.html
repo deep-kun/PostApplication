@@ -1,19 +1,19 @@
 <div class="container">
   <h1>Authentication works!</h1>
 
-  <form #userForm="ngForm">
+  <form (ngSumbit)="onSumbit()" #userForm="ngForm">
     <div class="form-group">
       <label for="login">Login</label>
       <input type="text" class="form-control" id="login" required [(ngModel)]="model.login" name="login" #login="ngModel">
-      <div [hidden]="login.valid || login.pristine" class="bg-danger">
+      <div [hidden]="login.valid || !login.touched" class="bg-danger">
         Login is required
       </div>
     </div>
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="text" class="form-control" id="password" required [(ngModel)]="model.password" name="password" #password="ngModel">
-      <div [hidden]="password.valid || password.pristine" class="bg-danger">
+      <input type="password" class="form-control" id="password" required [(ngModel)]="model.password" name="password" #password="ngModel">
+      <div [hidden]="password.valid || !password.touched" class="bg-danger">
         Password is required
       </div>
     </div>
