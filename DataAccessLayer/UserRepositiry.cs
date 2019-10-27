@@ -8,14 +8,16 @@ namespace DataAccessLayer
 {
     public class UserRepository : IUserRepository
     {
-        public UserRepository()
+        public UserRepository(IDBContext dBContext)
         {
+            this.dBContext = dBContext;
         }
-        string cons = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=PostService;Integrated Security=yes";
+
+        private readonly IDBContext dBContext;
 
         public User GetUserByLoginPassword(string login, string password)
         {
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
@@ -49,7 +51,7 @@ namespace DataAccessLayer
 
         public int RegisterUser(User u)
         {
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
@@ -66,7 +68,7 @@ namespace DataAccessLayer
 
         public List<Message> GetMessagesForUser(int id)
         {
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
@@ -106,7 +108,7 @@ namespace DataAccessLayer
 
         public MessageBody GetMessageById(int id)
         {
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
@@ -138,7 +140,7 @@ where Message.MessageId=@Id";
 
         public void SetMessageRead(int id)
         {
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
@@ -152,7 +154,7 @@ where Message.MessageId=@Id";
 
         public void RemoveMsg(int id)
         {
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
@@ -175,7 +177,7 @@ where Message.MessageId=@Id";
         /*public void SendMsg(SendedMessage sendedMessage)
         {
             int mid;
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
 
                 using (SqlCommand cmd = conn.CreateCommand())
@@ -188,7 +190,7 @@ where Message.MessageId=@Id";
                     mid = Convert.ToInt32(cmd.ExecuteScalar());
                 }
             }
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
 
                 using (SqlCommand cmd = conn.CreateCommand())
@@ -204,7 +206,7 @@ where Message.MessageId=@Id";
         }*/
         public void SendMsg(SendedMessage sendedMessage)
         {
-            using (SqlConnection connection = new SqlConnection(cons))
+            using (SqlConnection connection = new SqlConnection(dBContext.ConnectionString))
             {
                 connection.Open();
 
@@ -247,7 +249,7 @@ where Message.MessageId=@Id";
 
         public bool CheckUser(string nick)
         {
-            using (SqlConnection conn = new SqlConnection(cons))
+            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {

@@ -24,6 +24,7 @@ namespace PostAPI
             services.Configure<AppSettings>(appSettingsSection);
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IDBContext, DBContext>();
 
             services.AddAuthentication(x =>
                 {
