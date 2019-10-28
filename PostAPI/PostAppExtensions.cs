@@ -20,8 +20,6 @@ namespace PostAPI
         private static readonly string key = "KEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEY";
         public static void AddPostApp(this IServiceCollection services, IConfiguration configuration)
         {
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IDBContext, DBContext>();

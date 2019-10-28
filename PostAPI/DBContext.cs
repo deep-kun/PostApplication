@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,10 @@ namespace PostAPI
 {
     public class DBContext : IDBContext
     {
-        public string ConnectionString => @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=PostService;Integrated Security=yes";
+        public DBContext(IConfiguration configuration)
+        {
+            this.ConnectionString = configuration.GetConnectionString("DefaultConnection");
+        }
+        public string ConnectionString { get; }
     }
 }
