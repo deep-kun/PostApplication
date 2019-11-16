@@ -12,15 +12,13 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrls: ['./authentication.component.css']
 })
 export class AuthenticationComponent implements OnInit {
-
-  model = new User('', '');
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService:  AuthenticationService
   ) {}
 
+  model = new User('', '');
   loading = false;
   submitted = false;
   returnUrl = '/e' ;
