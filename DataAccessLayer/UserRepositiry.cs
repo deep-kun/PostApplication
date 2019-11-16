@@ -21,7 +21,7 @@ namespace DataAccessLayer
             {
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    User user = new User();
+                    User user = null;
                     cmd.CommandText = "GetUser";
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -31,12 +31,15 @@ namespace DataAccessLayer
                     try
                     {
                         SqlDataReader dataReader = cmd.ExecuteReader();
-                        dataReader.Read();
-                        user.UserId = int.Parse(dataReader["UserId"].ToString());
-                        user.Name = dataReader["UserName"].ToString();
-                        user.Login = dataReader["UserLogin"].ToString();
-                        user.Password = dataReader["Password"].ToString();
-                        user.Role = int.Parse(dataReader["RoleId"].ToString());
+                        while (dataReader.Read())
+                        {
+                            user = new User();
+                            user.UserId = int.Parse(dataReader["UserId"].ToString());
+                            user.Name = dataReader["UserName"].ToString();
+                            user.Login = dataReader["UserLogin"].ToString();
+                            user.Password = dataReader["Password"].ToString();
+                            user.Role = int.Parse(dataReader["RoleId"].ToString());
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -127,7 +130,7 @@ where Message.MessageId=@Id";
                         mb.Date = (DateTime)dataReader["Date"];
                         mb.Body = dataReader["Body"].ToString();
                         mb.Author = dataReader["Author"].ToString();
-                        mb.ReceiverId= int.Parse(dataReader["UserId"].ToString());
+                        mb.ReceiverId = int.Parse(dataReader["UserId"].ToString());
                     }
                     catch (Exception ex)
                     {
@@ -254,7 +257,7 @@ where Message.MessageId=@Id";
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"select * from users where UserLogin = @Log";
-                    cmd.Parameters.AddWithValue("@Log",nick);
+                    cmd.Parameters.AddWithValue("@Log", nick);
                     conn.Open();
                     var reader = cmd.ExecuteReader();
                     if (reader.HasRows)
@@ -267,7 +270,7 @@ where Message.MessageId=@Id";
                     }
 
                 }
-            } 
+            }
         }
 
     }

@@ -33,7 +33,7 @@ namespace PostAPI.Controllers
         [HttpGet]
         public IActionResult Authenticate()
         {
-            return Ok("ok");
+            return Ok("you are the best");
         }
     }
 }
