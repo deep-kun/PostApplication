@@ -1,6 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {User} from '../model/user';
 import { HttpClient } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
@@ -12,17 +15,34 @@ export class AuthenticationComponent implements OnInit {
 
   model = new User('', '');
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService:  AuthenticationService
+  ) {}
 
-   }
+  loading = false;
+  submitted = false;
+  returnUrl = '/e' ;
+  error = '';
 
   ngOnInit() {
+    console.log('on init');
   }
 
-  // onSumbit() {
-  //   this.http.get<WeatherForecast[]>(this.baseUrl + 'api/SampleData/WeatherForecasts').subscribe(result => {
-  //     this.forecasts = result;
-  //   }, error => console.error(error));
-  // }
+  onSubmit() {
+    console.log('pressed');
+    this.error = '';
 
+  this.authenticationService.login(this.model.login, this.model.password)
+//  .pipe(first())
+  .subscribe(
+      data => {
+          this.router.navigate([this.returnUrl]);
+      },
+      error => {
+          this.error = error;
+          this.loading = false;
+      });
+    }
 }

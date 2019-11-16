@@ -1,7 +1,8 @@
 <div class="container">
   <h1>Authentication works!</h1>
 
-  <form (ngSumbit)="onSumbit()" #userForm="ngForm">
+  <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+  <form (ngSubmit)="onSubmit()" #userForm="ngForm">
     <div class="form-group">
       <label for="login">Login</label>
       <input type="text" class="form-control" id="login" required [(ngModel)]="model.login" name="login" #login="ngModel">
@@ -18,6 +19,8 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Submit</button>
+    <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Submit</button>
   </form>
 </div>
