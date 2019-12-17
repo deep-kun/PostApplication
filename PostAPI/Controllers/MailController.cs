@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using DataAccessLayer;
 using DataAccessLayer.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PostAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class MailController : Controller
     {
         private readonly IUserRepository userRepositiry;

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -11,6 +11,8 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { MessagesComponent } from './post/messages/messages.component';
+import { JwtInterceptorService } from './services/jwt-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { AuthGuardService } from './services/auth-guard.service';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -30,9 +33,13 @@ import { AuthGuardService } from './services/auth-guard.service';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuardService] },
       { path: 'auth', component: AuthenticationComponent },
+      { path: 'messages', component: MessagesComponent, canActivate: [AuthGuardService] },
     ])
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

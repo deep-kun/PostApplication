@@ -27,7 +27,8 @@ login(login: string, password: string) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             console.log(JSON.stringify(user));
             console.log(user.token);
-            localStorage.setItem('currentUser', user.token);
+            localStorage.removeItem('currentUser');
+            localStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
             return user;
         }));
