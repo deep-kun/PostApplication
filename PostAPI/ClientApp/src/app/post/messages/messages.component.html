@@ -1,2 +1,28 @@
-<p>messages works!</p>
-<button onclick="initData()">Refresh</button>
+<button (click)="initData()">Refresh</button>
+
+<table class="table table-striped">
+        <thead>
+            <tr>
+                    <th>Sender</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of messages" 
+            [ngStyle]="{'font-weight': m.isRead === true ? '' : 'bold'}"
+            (click)="onSelect(m)">
+            >
+              <td>
+                     <div>{{m.author}} {{m.isRead === false ? '[New message]' : ''}}</div>
+              </td>
+              <td>
+                    <div>{{m.subject}}</div>
+              </td>
+              <td>
+                    <div>{{m.date}}</div>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+      <app-message-details [mes] = "messageBody"></app-message-details>

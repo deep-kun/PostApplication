@@ -1,8 +1,7 @@
-export interface Message {
+export interface MessageBody {
     MessageId: number;
     date: Date;
     subject: string;
-    isRead: boolean;
-    IsStared: boolean;
     author: string;
+    body: string;
 }

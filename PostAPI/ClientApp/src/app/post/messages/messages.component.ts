@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { HttpClient } from '@angular/common/http';
+import { MessageBody } from 'src/app/model/messageBody';
+import { Message } from 'src/app/model/messsage';
 
 @Component({
   selector: 'app-messages',
@@ -8,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MessagesComponent implements OnInit {
   messages: Message[];
+  messageBody: MessageBody;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     this.initData();
@@ -22,4 +24,9 @@ export class MessagesComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  onSelect(msg: Message): void {
+    this.http.get<MessageBody>(this.baseUrl + 'api/Mail/' + msg.id).subscribe(res => {
+      this.messageBody = res;
+    }, error => console.error(error));
+  }
 }
