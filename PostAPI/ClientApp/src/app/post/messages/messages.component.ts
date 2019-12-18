@@ -25,7 +25,7 @@ export class MessagesComponent implements OnInit {
   }
 
   onSelect(msg: Message): void {
-    this.http.get<MessageBody>(this.baseUrl + 'api/Mail/' + msg.id).subscribe(res => {
+    this.http.get<MessageBody>(this.baseUrl + 'api/Mail/' + msg.MessageId).subscribe(res => {
       this.messageBody = res;
     }, error => console.error(error));
   }
