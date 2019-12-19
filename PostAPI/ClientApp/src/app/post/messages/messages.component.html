@@ -1,4 +1,5 @@
 <button (click)="initData()">Refresh</button>
+<button (click)="newMsg()">New message</button>
 
 <table class="table table-striped">
         <thead>
@@ -11,8 +12,7 @@
           <tbody>
             <tr *ngFor="let m of messages" 
             [ngStyle]="{'font-weight': m.isRead === true ? '' : 'bold'}"
-            (click)="onSelect(m)">
-            >
+            (click)="onSelect(m); ">
               <td>
                      <div>{{m.author}} {{m.isRead === false ? '[New message]' : ''}}</div>
               </td>
@@ -25,4 +25,4 @@
             </tr>
           </tbody>
       </table>
-      <app-message-details [mes] = "messageBody"></app-message-details>
+      <app-message-details [mes] = "messageBody" ></app-message-details>

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -15,6 +14,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { MessagesComponent } from './post/messages/messages.component';
 import { JwtInterceptorService } from './services/jwt-interceptor.service';
 import { MessageDetailsComponent } from './post/message-details/message-details.component';
+import { MessageCreateComponent } from './post/message-create/message-create.component';
 
 @NgModule({
   declarations: [
@@ -25,10 +25,10 @@ import { MessageDetailsComponent } from './post/message-details/message-details.
     FetchDataComponent,
     AuthenticationComponent,
     MessagesComponent,
-    MessageDetailsComponent
+    MessageDetailsComponent,
+    MessageCreateComponent
   ],
   imports: [
-    NgbModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
@@ -38,6 +38,7 @@ import { MessageDetailsComponent } from './post/message-details/message-details.
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuardService] },
       { path: 'auth', component: AuthenticationComponent },
       { path: 'messages', component: MessagesComponent, canActivate: [AuthGuardService] },
+      { path: 'newmsg', component: MessageCreateComponent, canActivate: [AuthGuardService] },
     ])
   ],
   providers: [

@@ -1,5 +1,5 @@
 export interface Message {
-    MessageId: number;
+    messageId: number;
     date: Date;
     subject: string;
     isRead: boolean;

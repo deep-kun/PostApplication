@@ -21,7 +21,7 @@ export class AuthenticationComponent implements OnInit {
   model = new User('', '');
   loading = false;
   submitted = false;
-  returnUrl = '/e' ;
+  returnUrl = '/m' ;
   error = '';
 
   ngOnInit() {
@@ -32,7 +32,7 @@ export class AuthenticationComponent implements OnInit {
     console.log('pressed');
     this.error = '';
 
-  this.authenticationService.login(this.model.login, this.model.password)
+    this.authenticationService.login(this.model.login, this.model.password)
 //  .pipe(first())
   .subscribe(
       data => {

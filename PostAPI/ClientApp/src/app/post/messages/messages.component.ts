@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MessageBody } from '../../model/messageBody';
 import { Message } from '../../model/messsage';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-messages',
@@ -11,7 +12,7 @@ export class MessagesComponent implements OnInit {
   messages: Message[];
   messageBody: MessageBody;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router) {
     this.initData();
   }
   ngOnInit() {
@@ -24,9 +25,17 @@ export class MessagesComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  newMsg() {
+    this.router.navigate(['/newmsg']);
+  }
+
   onSelect(msg: Message): void {
-    this.http.get<MessageBody>(this.baseUrl + 'api/Mail/' + msg.MessageId).subscribe(res => {
+    console.log('on select');
+    console.log(msg);
+    console.log(this.baseUrl + 'api/Mail/' + msg.messageId);
+    this.http.get<MessageBody>(this.baseUrl + 'api/Mail/' + msg.messageId).subscribe(res => {
       this.messageBody = res;
+      this.initData();
     }, error => console.error(error));
   }
 }
