@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using DataAccessLayer;
 using DataAccessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -50,16 +52,10 @@ namespace PostAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]SendedMessage smv)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    var stsBuilder = new StringBuilder();
-            //    foreach (var err in ModelState.Values)
-            //    {
-            //        stsBuilder.Append(err.Errors.FirstOrDefault().ErrorMessage);
-            //        stsBuilder.Append(Environment.NewLine);
-            //    }
-            //    return BadRequest(stsBuilder.ToString());
-            //}
+            if (!IsValid(smv, out var erros))
+            {
+                return BadRequest(erros);
+            }
 
             var claimsIdentity = User.Identity as ClaimsIdentity;
             int id = Int32.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -75,6 +71,19 @@ namespace PostAPI.Controllers
         {
             userRepositiry.RemoveMsg(id);
             return Ok();
+        }
+
+        private bool IsValid(SendedMessage sendedMessage, out string errors)
+        {
+            var valid = true;
+            errors = "";
+            if (!this.userRepositiry.CheckUser(sendedMessage.Receiver))
+            {
+                errors = $"Reciver {sendedMessage.Receiver} not found.";
+                return false;
+            }
+
+            return valid;
         }
     }
 }

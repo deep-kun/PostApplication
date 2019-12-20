@@ -15,7 +15,7 @@ export class AuthenticationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService:  AuthenticationService
+    private authenticationService: AuthenticationService
   ) {}
 
   model = new User('', '');
@@ -33,10 +33,9 @@ export class AuthenticationComponent implements OnInit {
     this.error = '';
 
     this.authenticationService.login(this.model.login, this.model.password)
-//  .pipe(first())
   .subscribe(
       data => {
-          this.router.navigate([this.returnUrl]);
+          this.router.navigate([`messages`]);
       },
       error => {
           this.error = error;

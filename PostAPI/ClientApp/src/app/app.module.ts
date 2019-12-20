@@ -15,6 +15,7 @@ import { MessagesComponent } from './post/messages/messages.component';
 import { JwtInterceptorService } from './services/jwt-interceptor.service';
 import { MessageDetailsComponent } from './post/message-details/message-details.component';
 import { MessageCreateComponent } from './post/message-create/message-create.component';
+import { RegistrationComponent } from './authentication/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { MessageCreateComponent } from './post/message-create/message-create.com
     AuthenticationComponent,
     MessagesComponent,
     MessageDetailsComponent,
-    MessageCreateComponent
+    MessageCreateComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
