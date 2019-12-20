@@ -21,7 +21,7 @@
                     <div>{{m.subject}}</div>
               </td>
               <td>
-                    <div>{{m.date}}</div>
+                    <div>{{m.date | date:'medium'}}</div>
               </td>
               <td>
                   <button (click)="onSelect(m)" class="btn btn-secondary">Read</button>

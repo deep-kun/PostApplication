@@ -1,6 +1,15 @@
 <div *ngIf="mes">
-    <div><span>author: </span>{{mes.author}}</div>
-    <div><span>subject: </span>{{mes.subject}}</div>
-    <div><span>date: </span>{{mes.date}}</div>
-    <div><span>body: </span>{{mes.body}}</div>
+    <div class="container p-3 my-3 bg-dark text-white">
+    <div class="container-fluid">
+        <span class="container-md mt-3 border" >
+            author: 
+        </span>
+            <div class="container-fluid">
+                {{mes.author}}
+            </div>
+        </div>
+    <div class="container-fluid"><span class="container-md mt-3 border">subject: </span><div class="container-fluid">{{mes.subject}}</div></div>
+    <div class="container-fluid"><span class="container-md mt-3 border">date: </span><div class="container-fluid">{{mes.date | date:'medium' }}</div></div>
+    <div class="container-fluid"><span class="container-md mt-3 border">body: </span><div class="container-fluid">{{mes.body}}</div></div>
+</div>
 </div>
