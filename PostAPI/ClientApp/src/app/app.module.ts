@@ -41,6 +41,7 @@ import { RegistrationComponent } from './authentication/registration/registratio
       { path: 'auth', component: AuthenticationComponent },
       { path: 'messages', component: MessagesComponent, canActivate: [AuthGuardService] },
       { path: 'newmsg', component: MessageCreateComponent, canActivate: [AuthGuardService] },
+      { path: 'reg', component: RegistrationComponent },
     ])
   ],
   providers: [

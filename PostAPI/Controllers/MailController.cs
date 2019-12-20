@@ -65,7 +65,7 @@ namespace PostAPI.Controllers
         }
 
         // DELETE: api/Mail/5
-        [Route("")]
+        [Route("{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
@@ -79,7 +79,7 @@ namespace PostAPI.Controllers
             errors = "";
             if (!this.userRepositiry.CheckUser(sendedMessage.Receiver))
             {
-                errors = $"Reciver {sendedMessage.Receiver} not found.";
+                errors = $"User {sendedMessage.Receiver} not found.";
                 return false;
             }
 

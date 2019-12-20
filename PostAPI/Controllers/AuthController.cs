@@ -1,7 +1,9 @@
-﻿using DataAccessLayer.Model;
+﻿using DataAccessLayer;
+using DataAccessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostAPI.Auth;
+using System.Text;
 
 namespace PostAPI.Controllers
 {
@@ -10,10 +12,12 @@ namespace PostAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
+        private readonly IUserRepository userRepositiry;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserRepository userRepositiry)
         {
             this.authService = authService;
+            this.userRepositiry = userRepositiry;
         }
 
         [AllowAnonymous]
@@ -29,11 +33,45 @@ namespace PostAPI.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("reg")]
+        public IActionResult RegActionResult([FromBody]User userView)
+        {
+            if (!IsValid(userView, out var error))
+            {
+                return BadRequest(error);
+            }
+            var u = new User
+            {
+                Login = userView.Login,
+                Name = userView.Name,
+                Password = userView.Password,
+                Role = 1
+            };
+            userRepositiry.RegisterUser(u);
+            var user = this.authService.Authenticate(userView.Login, userView.Password);
+            return Ok(user);
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult Authenticate()
         {
             return Ok("you are the best");
+        }
+
+        private bool IsValid(User user, out string errors)
+        {
+            var valid = true;
+            errors = "";
+            if (this.userRepositiry.CheckUser(user.Login))
+            {
+                errors = $"{user.Login} is already taken.";
+                return false;
+            }
+
+            return valid;
         }
     }
 }

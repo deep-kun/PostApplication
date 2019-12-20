@@ -24,6 +24,11 @@
                     </a>
                 </li>
                 <li [routerLinkActive]='["link-active"]'>
+                        <a [routerLink]='["/reg"]' (click)='collapse()' *ngIf ="showLogin" >
+                            <span class='glyphicon glyphicon-th-list'></span> Register
+                        </a>
+                    </li>
+                <li [routerLinkActive]='["link-active"]'>
                     <a [routerLink]='["/messages"]' (click)='collapse()' *ngIf ="!showLogin">
                         <span class='glyphicon glyphicon-th-list'></span> Messages
                     </a>

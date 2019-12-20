@@ -29,10 +29,16 @@ export class MessagesComponent implements OnInit {
     this.router.navigate(['/newmsg']);
   }
 
+  delete(msg: Message) {
+    console.log('delete');
+    this.messageBody = null;
+    this.http.delete<any>(this.baseUrl + 'api/Mail/' + msg.messageId).subscribe(res => {
+      this.initData();
+    }, error => console.error(error));
+    }
+
   onSelect(msg: Message): void {
     console.log('on select');
-    console.log(msg);
-    console.log(this.baseUrl + 'api/Mail/' + msg.messageId);
     this.http.get<MessageBody>(this.baseUrl + 'api/Mail/' + msg.messageId).subscribe(res => {
       this.messageBody = res;
       this.initData();

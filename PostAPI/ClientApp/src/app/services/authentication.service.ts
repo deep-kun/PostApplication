@@ -34,6 +34,19 @@ login(login: string, password: string) {
         }));
 }
 
+register(login: string, password: string, name: string){
+  return this.http.post<any>(`api/auth/reg`, { login, password, name })
+  .pipe(map(user => {
+      // store user details and jwt token in local storage to keep user logged in between page refreshes
+      console.log(JSON.stringify(user));
+      console.log(user.token);
+      localStorage.removeItem('currentUser');
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      this.currentUserSubject.next(user);
+      return user;
+  }));
+}
+
 logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');

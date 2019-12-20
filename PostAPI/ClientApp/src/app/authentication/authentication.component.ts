@@ -18,7 +18,7 @@ export class AuthenticationComponent implements OnInit {
     private authenticationService: AuthenticationService
   ) {}
 
-  model = new User('', '');
+  model = new User('', '', '');
   loading = false;
   submitted = false;
   returnUrl = '/m' ;
