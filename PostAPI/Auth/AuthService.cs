@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using DataAccessLayer.Abstraction;
 using DataAccessLayer.Model;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,7 +15,7 @@ namespace PostAPI.Auth
 {
     public class AuthService : IAuthService
     {
-        JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+        readonly JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         private readonly IUserRepository userRepository;
         private readonly IOptions<AppSettings> options;
 

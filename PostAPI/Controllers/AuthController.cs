@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using DataAccessLayer.Abstraction;
 using DataAccessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +66,7 @@ namespace PostAPI.Controllers
         {
             var valid = true;
             errors = "";
-            if (this.userRepositiry.CheckUser(user.Login))
+            if (this.userRepositiry.CheckUserExsits(user.Login))
             {
                 errors = $"{user.Login} is already taken.";
                 return false;

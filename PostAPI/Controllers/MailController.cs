@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using DataAccessLayer;
+using DataAccessLayer.Abstraction;
 using DataAccessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace PostAPI.Controllers
     [Authorize]
     public class MailController : Controller
     {
-        private readonly IUserRepository userRepositiry;
-        public MailController(IUserRepository userRepositiry)
+        private readonly IMessageRepository messageRepository;
+        private readonly IUserRepository userRepository;
+        public MailController(IMessageRepository messageRepository, IUserRepository userRepository)
         {
-            this.userRepositiry = userRepositiry;
+            this.messageRepository = messageRepository;
+            this.userRepository = userRepository;
         }
 
         // GET: api/Mail
@@ -27,7 +30,7 @@ namespace PostAPI.Controllers
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             int id = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return userRepositiry.GetMessagesForUser(id);
+            return messageRepository.GetMessagesForUser(id);
         }
 
         // GET: api/Mail/5
@@ -37,13 +40,13 @@ namespace PostAPI.Controllers
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             int uid = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var msg = userRepositiry.GetMessageById(id);
+            var msg = messageRepository.GetMessageById(id);
             if (msg.ReceiverId != uid)
             {
                 throw new NullReferenceException();
                 ///return View("Error");
             }
-            userRepositiry.SetMessageRead(id);
+            messageRepository.SetMessageRead(id);
             return msg;
         }
 
@@ -60,7 +63,7 @@ namespace PostAPI.Controllers
             var claimsIdentity = User.Identity as ClaimsIdentity;
             int id = Int32.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
             smv.AuthorId = id;
-            userRepositiry.SendMsg(smv);
+            messageRepository.SendMessage(smv);
             return Ok();
         }
 
@@ -69,7 +72,7 @@ namespace PostAPI.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            userRepositiry.RemoveMsg(id);
+            messageRepository.RemoveMsg(id);
             return Ok();
         }
 
@@ -77,7 +80,7 @@ namespace PostAPI.Controllers
         {
             var valid = true;
             errors = "";
-            if (!this.userRepositiry.CheckUser(sendedMessage.Receiver))
+            if (!this.userRepository.CheckUserExsits(sendedMessage.Receiver))
             {
                 errors = $"User {sendedMessage.Receiver} not found.";
                 return false;

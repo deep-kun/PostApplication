@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
+using DataAccessLayer.Abstraction;
+using DataAccessLayer.DataBaseImpelemtation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +26,7 @@ namespace PostAPI
             var appSettings = configuration.GetSection(nameof(AppSettings));
             services.Configure<AppSettings>(appSettings);
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IDBContext, DBContext>();
 
