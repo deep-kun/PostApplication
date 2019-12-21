@@ -19,9 +19,10 @@ namespace PostAPI
 {
     public static class PostAppExtensions
     {
-        private static readonly string key = "KEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEY";
         public static void AddPostApp(this IServiceCollection services, IConfiguration configuration)
         {
+            var appSettings = configuration.GetSection(nameof(AppSettings));
+            services.Configure<AppSettings>(appSettings);
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IDBContext, DBContext>();
@@ -38,7 +39,8 @@ namespace PostAPI
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.ASCII.GetBytes(appSettings.GetValue<string>(nameof(AppSettings.JwtSecret)))),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };

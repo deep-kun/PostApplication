@@ -7,20 +7,21 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using DataAccessLayer.Model;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace PostAPI.Auth
 {
     public class AuthService : IAuthService
     {
-        private static readonly string key = "KEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEYKEY";
-
         JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         private readonly IUserRepository userRepository;
+        private readonly IOptions<AppSettings> options;
 
-        public AuthService(IUserRepository userRepository)
+        public AuthService(IUserRepository userRepository, IOptions<AppSettings> options)
         {
             this.userRepository = userRepository;
+            this.options = options;
         }
 
         public User Authenticate(string userName, string password)
@@ -31,7 +32,7 @@ namespace PostAPI.Auth
                 return null;
             }
 
-            var tkey = Encoding.ASCII.GetBytes(key);
+            var tkey = Encoding.ASCII.GetBytes(options.Value.JwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
