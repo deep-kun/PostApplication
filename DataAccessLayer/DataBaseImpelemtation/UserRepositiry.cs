@@ -52,38 +52,36 @@ namespace DataAccessLayer.DataBaseImpelemtation
 
         public int RegisterUser(User u)
         {
-            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
+            using SqlConnection conn = new SqlConnection(dBContext.ConnectionString);
+            using (SqlCommand cmd = conn.CreateCommand())
             {
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"insert into Users values(@Name,@Login,@Password,@Role)";
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@Name", u.Name);
-                    cmd.Parameters.AddWithValue("@Login", u.Login);
-                    cmd.Parameters.AddWithValue("@Password", u.Password);
-                    cmd.Parameters.AddWithValue("@Role", u.Role);
-                    return Convert.ToInt32(cmd.ExecuteScalar());
-                }
+                cmd.CommandText = @"insert into Users values(@Name,@Login,@Password,@Role)";
+                conn.Open();
+                cmd.Parameters.AddWithValue("@Name", u.Name);
+                cmd.Parameters.AddWithValue("@Login", u.Login);
+                cmd.Parameters.AddWithValue("@Password", u.Password);
+                cmd.Parameters.AddWithValue("@Role", u.Role);
+                return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }
 
-        public bool CheckUserExsits(string nick)
+        public User GetUserByLogin(string nick)
         {
             using SqlConnection conn = new SqlConnection(dBContext.ConnectionString);
             using (SqlCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = @"select 1 from users where UserLogin = @Log";
+                cmd.CommandText = @"select * from users where UserLogin = @Log";
                 cmd.Parameters.AddWithValue("@Log", nick);
                 conn.Open();
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                var dataReader = cmd.ExecuteReader();
+                dataReader.Read();
+                var user = new User();
+                user.UserId = int.Parse(dataReader["UserId"].ToString());
+                user.Name = dataReader["UserName"].ToString();
+                user.Login = dataReader["UserLogin"].ToString();
+                user.Password = dataReader["Password"].ToString();
+                user.Role = int.Parse(dataReader["RoleId"].ToString());
+                return user;
             }
         }
     }
