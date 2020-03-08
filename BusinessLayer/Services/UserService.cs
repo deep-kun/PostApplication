@@ -1,7 +1,7 @@
 ﻿using DataAccessLayer.Abstraction;
-using ServicesLayer.Model;
+using BusinessLayer.Model;
 
-namespace ServicesLayer.Abstraction
+namespace BusinessLayer.Abstraction
 {
     public class UserService : IUserService
     {

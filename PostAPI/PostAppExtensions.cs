@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Abstraction;
 using DataAccessLayer;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.DataBaseImpelemtation;
@@ -26,8 +27,9 @@ namespace PostAPI
             var appSettings = configuration.GetSection(nameof(AppSettings));
             services.Configure<AppSettings>(appSettings);
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMessageRepository, MessageRepository>();
-            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IAuthManager, AuthManager>();
             services.AddTransient<IDBContext, DBContext>();
 
             services.AddAuthentication(x =>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServicesLayer.Model
+namespace BusinessLayer.Model
 {
     public class User
     {

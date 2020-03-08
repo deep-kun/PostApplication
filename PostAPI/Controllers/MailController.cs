@@ -61,7 +61,7 @@ namespace PostAPI.Controllers
             }
 
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            int id = Int32.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var id = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
             smv.AuthorId = id;
             messageRepository.SendMessage(smv);
             return Ok();
@@ -80,7 +80,7 @@ namespace PostAPI.Controllers
         {
             var valid = true;
             errors = "";
-            if (!this.userRepository.CheckUserExsits(sendedMessage.Receiver))
+            if (this.userRepository.GetUserByLogin(sendedMessage.Receiver) != null)
             {
                 errors = $"User {sendedMessage.Receiver} not found.";
                 return false;

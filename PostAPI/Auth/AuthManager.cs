@@ -2,31 +2,37 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using DataAccessLayer.Abstraction;
-using DataAccessLayer.Model;
+using BusinessLayer.Abstraction;
+using BusinessLayer.Model;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PostAPI.Model;
 
 namespace PostAPI.Auth
 {
-    public class AuthService : IAuthService
+    public class AuthManager : IAuthManager
     {
         readonly JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-        private readonly IUserRepository userRepository;
+        private readonly IUserService userService;
         private readonly IOptions<AppSettings> options;
 
-        public AuthService(IUserRepository userRepository, IOptions<AppSettings> options)
+        public AuthManager(IUserService userService, IOptions<AppSettings> options)
         {
-            this.userRepository = userRepository;
+            this.userService = userService;
             this.options = options;
         }
 
-        public User Authenticate(string userName, string password)
+        public AuthentificationResult Authenticate(string userName, string password)
         {
-            var user = this.userRepository.GetUserByLoginPassword(userName, password);
+            var user = this.userService.GetUserByLoginPassword(userName, password);
+
+            var result = new AuthentificationResult();
+
             if (user == null)
             {
-                return null;
+                result.ErrorMessage = "Invalid user name or password.";
+
+                return result;
             }
 
             var tkey = Encoding.ASCII.GetBytes(options.Value.JwtSecret);
@@ -40,9 +46,9 @@ namespace PostAPI.Auth
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tkey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = this.jwtSecurityTokenHandler.CreateToken(tokenDescriptor);
-            user.Token = jwtSecurityTokenHandler.WriteToken(token);
+            result.Token = jwtSecurityTokenHandler.WriteToken(token);
 
-            return user;
+            return result;
         }
     }
 }

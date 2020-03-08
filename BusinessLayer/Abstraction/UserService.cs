@@ -1,6 +1,6 @@
-﻿using ServicesLayer.Model;
+﻿using BusinessLayer.Model;
 
-namespace ServicesLayer.Abstraction
+namespace BusinessLayer.Abstraction
 {
     public interface IUserService
     {

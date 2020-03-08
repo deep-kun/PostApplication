@@ -1,9 +1,11 @@
-﻿using DataAccessLayer;
+﻿using BusinessLayer.Abstraction;
+using BusinessLayer.Model;
+using DataAccessLayer;
 using DataAccessLayer.Abstraction;
-using DataAccessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostAPI.Auth;
+using PostAPI.Model;
 using System.Text;
 
 namespace PostAPI.Controllers
@@ -12,32 +14,31 @@ namespace PostAPI.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService authService;
-        private readonly IUserRepository userRepositiry;
+        private readonly IAuthManager authManager;
+        private readonly IUserService userService;
 
-        public AuthController(IAuthService authService, IUserRepository userRepositiry)
+        public AuthController(IAuthManager authManager, IUserService userService)
         {
-            this.authService = authService;
-            this.userRepositiry = userRepositiry;
+            this.authManager = authManager;
+            this.userService = userService;
         }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("authenticate")]
-        public IActionResult Authenticate([FromBody]User userInput)
+        public IActionResult Authenticate([FromBody]UserDto userInput)
         {
-            var user = this.authService.Authenticate(userInput.Login, userInput.Password);
+            var authentificationResult = this.authManager.Authenticate(userInput.Login, userInput.Password);
 
-            if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
-
-            return Ok(user);
+            return authentificationResult.IsSuccess
+                  ? Ok(new { authentificationResult.Token })
+                  : (IActionResult)BadRequest(new { authentificationResult.ErrorMessage });
         }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("reg")]
-        public IActionResult RegActionResult([FromBody]User userView)
+        public IActionResult RegActionResult([FromBody]UserDto userView)
         {
             if (!IsValid(userView, out var error))
             {
@@ -50,9 +51,12 @@ namespace PostAPI.Controllers
                 Password = userView.Password,
                 Role = 1
             };
-            userRepositiry.RegisterUser(u);
-            var user = this.authService.Authenticate(userView.Login, userView.Password);
-            return Ok(user);
+
+            this.userService.RegisterUser(u);
+            
+            var authentificationResult = this.authManager.Authenticate(userView.Login, userView.Password);
+            
+            return Ok(new { authentificationResult.Token });
         }
 
         [Authorize]
@@ -62,11 +66,11 @@ namespace PostAPI.Controllers
             return Ok("you are the best");
         }
 
-        private bool IsValid(User user, out string errors)
+        private bool IsValid(UserDto user, out string errors)
         {
             var valid = true;
             errors = "";
-            if (this.userRepositiry.CheckUserExsits(user.Login))
+            if (this.userService.GetUserByLogin(user.Login) != null)
             {
                 errors = $"{user.Login} is already taken.";
                 return false;
