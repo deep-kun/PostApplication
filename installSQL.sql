@@ -1,72 +1,60 @@
-create table Roles (
-	RoleId int CONSTRAINT PK_RoleId PRIMARY KEY IDENTITY(1,1),
-	RoleName nvarchar(25) NOT NULL
+CREATE DATABASE [PostService]
+GO
+USE [PostService]
+
+CREATE TABLE [Roles] (
+	[RoleId] int CONSTRAINT PK_RoleId PRIMARY KEY IDENTITY(1,1),
+	[RoleName] nvarchar(25) NOT NULL
 );
 
-create table Users (
-	UserId int CONSTRAINT PK_UserId PRIMARY KEY IDENTITY(1,1),
-	UserName nvarchar(25) NOT NULL,
-	UserLogin nvarchar(25) NOT NULL,
-	Password nvarchar(25) NOT NULL,
-	RoleId int NOT NULL,
-	CONSTRAINT FK_Users_To_Roles FOREIGN KEY (RoleId) REFERENCES Roles(RoleId)
+CREATE TABLE [Users] (
+	[UserId] int CONSTRAINT PK_UserId PRIMARY KEY IDENTITY(1,1),
+	[UserName] nvarchar(50) NOT NULL,
+	[UserLogin] nvarchar(50) NOT NULL UNIQUE,
+	[PasswordHash] nvarchar(50) NOT NULL,
+	[RoleId] int NOT NULL,
+	CONSTRAINT FK_Users_To_Roles FOREIGN KEY ([RoleId]) REFERENCES Roles([RoleId]),
 );
 
-create table Logs (
-	LogId int CONSTRAINT PK_LogId PRIMARY KEY IDENTITY(1,1),
-	DataEnter DateTime NOT NULL,
-	Issuccess bit NOT NULL,
-	UserId int NOT NULL,
-	CONSTRAINT FK_Logs_To_Users FOREIGN KEY (UserId) REFERENCES Users (UserId)
-);
-	
-create table Message (
-	MessageId int CONSTRAINT PK_MessageId PRIMARY KEY IDENTITY(1,1),
-	Subject nvarchar(25) NOT NULL,
-	Body nvarchar(MAX) NOT NULL,
-	Date DateTime NOT NULL,
-	AuthorId int NOT NULL,
-	CONSTRAINT FK_Message_To_Users FOREIGN KEY (AuthorId) REFERENCES Users (UserId) 
+CREATE TABLE [Messages] (
+	[MessageId] int CONSTRAINT PK_MessageId PRIMARY KEY IDENTITY(1,1),
+	[Subject] nvarchar(25) NOT NULL,
+	[Body] nvarchar(max) NOT NULL,
+	[SentDate] datetimeoffset  NOT NULL,
+	[AuthorId] int NOT NULL,
+	CONSTRAINT FK_Message_To_Users FOREIGN KEY ([AuthorId]) REFERENCES [Users] ([UserId]) 
 );
 
-create table MessagePlaceHolders(
-	PlaceHolderId int CONSTRAINT PK_PlaceHolderId PRIMARY KEY IDENTITY(1,1),
-	PlaceHolder nvarchar(25) NOT NULL
+CREATE TABLE [MessagePlaceHolders] (
+	[PlaceHolderId] int CONSTRAINT PK_PlaceHolderId PRIMARY KEY IDENTITY(1,1),
+	[PlaceHolder] nvarchar(25) NOT NULL
 );
 
-create table Users_Messages_Mapped (
-	Users_Messages_MappedId int CONSTRAINT PK_Users_Messages_MappedId PRIMARY KEY IDENTITY(1,1),
-	MessageId int NOT NULL ,
-	UserId int NOT NULL,
-	PlaceHolderId int NOT NULL,
-	IsRead bit NOT NULL,
-	IsStarred bit NOT NULL
-	CONSTRAINT FK_User_Messages_Mappe_To_Messages FOREIGN KEY (MessageId) REFERENCES Message (MessageId),  
-	CONSTRAINT FK_User_Messages_Mappe_To_Users FOREIGN KEY (UserId) REFERENCES Users (Userid),
-	CONSTRAINT FK_User_Messages_Mappe_To_MessagePlaceHolders FOREIGN KEY (PlaceHolderId) REFERENCES MessagePlaceHolders (PlaceHolderId)
+CREATE TABLE [UsersMessagesMapped] (
+	[UsersMessagesMappedId] int CONSTRAINT PKUsersMessagesMappedId PRIMARY KEY IDENTITY(1,1),
+	[MessageId] int NOT NULL,
+	[UserId] int NOT NULL,
+	[PlaceHolderId] int NOT NULL,
+	[IsRead] bit NOT NULL,
+	[IsStarred] bit NOT NULL
+	CONSTRAINT FK_User_Messages_Mappe_To_Messages FOREIGN KEY (MessageId) REFERENCES Messages ([MessageId]),  
+	CONSTRAINT FK_User_Messages_Mappe_To_Users FOREIGN KEY (UserId) REFERENCES Users ([UserId]),
+	CONSTRAINT FK_User_Messages_Mappe_To_MessagePlaceHolders FOREIGN KEY ([PlaceHolderId]) REFERENCES [MessagePlaceHolders] ([PlaceHolderId])
 );
 
-  
-  insert into MessagePlaceHolders values('msg')
-  insert into Roles values('admin')
-  
-
-
---drop table Users_Messages_Mapped
---drop table MessagePlaceHolders
---drop table Message
---drop table Logs
---drop table Users
---drop table Roles
-
---drop procedure GetUser
-
-create Procedure GetUser
-    (@Login Varchar(25), @Password Varchar(25))
+GO
+CREATE PROCEDURE GetUserByLoginAndPassword
+    (@Login nvarchar(50), @PasswordHash nvarchar(50))
 As
 Begin
-    select * from Users u
-		where @Login=u.UserLogin and @Password=u.Password
+    select 
+	[UserId],
+	[UserName], 
+	[UserId],
+	[UserLogin],
+	[PasswordHash],
+	[RoleId] from Users u
+		where @Login=u.UserLogin and @PasswordHash=u.PasswordHash
 End
 
-select *  from users
+print('Database created successufuly.')
