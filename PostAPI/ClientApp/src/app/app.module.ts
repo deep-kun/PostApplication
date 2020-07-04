@@ -16,6 +16,7 @@ import { JwtInterceptorService } from './services/jwt-interceptor.service';
 import { MessageDetailsComponent } from './post/message-details/message-details.component';
 import { MessageCreateComponent } from './post/message-create/message-create.component';
 import { RegistrationComponent } from './authentication/registration/registration.component';
+import { AuthenticationService } from './services/authentication.service';
 
 @NgModule({
   declarations: [
@@ -45,8 +46,8 @@ import { RegistrationComponent } from './authentication/registration/registratio
     ])
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }
-
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true },
+    AuthenticationService 
   ],
   bootstrap: [AppComponent]
 })

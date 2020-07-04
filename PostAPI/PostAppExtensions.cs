@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using BusinessLayer.Abstraction;
 using DataAccessLayer;
 using DataAccessLayer.Abstraction;
@@ -76,15 +70,15 @@ namespace PostAPI
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+            //app.UseSpa(spa =>
+            //{
+            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    // see https://go.microsoft.com/fwlink/?linkid=864501   
 
-                spa.Options.SourcePath = "ClientApp";
+            //    spa.Options.SourcePath = "ClientApp";
 
-                spa.UseAngularCliServer(npmScript: "start");
-            });
+            //    spa.UseAngularCliServer(npmScript: "start");
+            //});
         }
     }
 }

@@ -37,7 +37,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
                             user.UserId = int.Parse(dataReader["UserId"].ToString());
                             user.Name = dataReader["UserName"].ToString();
                             user.Login = dataReader["UserLogin"].ToString();
-                            user.Password = dataReader["Password"].ToString();
+                            user.PasswordHash = dataReader["PasswordHash"].ToString();
                             user.Role = int.Parse(dataReader["RoleId"].ToString());
                         }
                     }
@@ -55,12 +55,13 @@ namespace DataAccessLayer.DataBaseImpelemtation
             using SqlConnection conn = new SqlConnection(dBContext.ConnectionString);
             using (SqlCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = @"insert into Users values(@Name,@Login,@Password,@Role)";
+                cmd.CommandText = @"insert into Users values(@Name, @Login, @Password, @Role)";
                 conn.Open();
                 cmd.Parameters.AddWithValue("@Name", u.Name);
                 cmd.Parameters.AddWithValue("@Login", u.Login);
-                cmd.Parameters.AddWithValue("@Password", u.Password);
+                cmd.Parameters.AddWithValue("@Password", u.PasswordHash);
                 cmd.Parameters.AddWithValue("@Role", u.Role);
+
                 return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }
@@ -79,8 +80,9 @@ namespace DataAccessLayer.DataBaseImpelemtation
                 user.UserId = int.Parse(dataReader["UserId"].ToString());
                 user.Name = dataReader["UserName"].ToString();
                 user.Login = dataReader["UserLogin"].ToString();
-                user.Password = dataReader["Password"].ToString();
+                user.PasswordHash = dataReader["Password"].ToString();
                 user.Role = int.Parse(dataReader["RoleId"].ToString());
+
                 return user;
             }
         }

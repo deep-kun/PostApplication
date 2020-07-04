@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MessageBody } from '../../model/messageBody';
 import { Message } from '../../model/messsage';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-messages',
@@ -12,14 +13,14 @@ export class MessagesComponent implements OnInit {
   messages: Message[];
   messageBody: MessageBody;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router) {
+  constructor(private http: HttpClient, private router: Router) {
     this.initData();
   }
   ngOnInit() {
   }
 
   initData() {
-    this.http.get<Message[]>(this.baseUrl + 'api/Mail/').subscribe(result => {
+    this.http.get<Message[]>(environment.apiUrl + 'api/Mail/').subscribe(result => {
       this.messages = result;
       console.log(this.messages);
     }, error => console.error(error));
@@ -32,14 +33,14 @@ export class MessagesComponent implements OnInit {
   delete(msg: Message) {
     console.log('delete');
     this.messageBody = null;
-    this.http.delete<any>(this.baseUrl + 'api/Mail/' + msg.messageId).subscribe(res => {
+    this.http.delete<any>(environment.apiUrl + 'api/Mail/' + msg.messageId).subscribe(res => {
       this.initData();
     }, error => console.error(error));
     }
 
   onSelect(msg: Message): void {
     console.log('on select');
-    this.http.get<MessageBody>(this.baseUrl + 'api/Mail/' + msg.messageId).subscribe(res => {
+    this.http.get<MessageBody>(environment.apiUrl + 'api/Mail/' + msg.messageId).subscribe(res => {
       this.messageBody = res;
       this.initData();
     }, error => console.error(error));

@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { SendedMessage } from 'src/app/model/sendedMessage';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-message-create',
@@ -12,7 +13,7 @@ export class MessageCreateComponent implements OnInit {
   model = new SendedMessage('', '', '');
   error = '';
 
-  constructor( private router: Router, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor( private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
   }
@@ -20,7 +21,7 @@ export class MessageCreateComponent implements OnInit {
   onSubmit() {
     this.error = '';
 
-    this.http.post<any>(this.baseUrl + 'api/Mail/send', this.model).subscribe(res => {
+    this.http.post<any>(environment.apiUrl + 'api/Mail/send', this.model).subscribe(res => {
       this.router.navigate(['messages']);
     }, error => {
       this.error = error.error;

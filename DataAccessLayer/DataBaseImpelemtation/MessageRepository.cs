@@ -22,10 +22,11 @@ namespace DataAccessLayer.DataBaseImpelemtation
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            select Message.MessageId,Message.Date,Message.Subject,Users_Messages_Mapped.IsRead,Users_Messages_Mapped.PlaceHolderId,Users_Messages_Mapped.IsStarred,(select UserName from Users where Message.AuthorId=Users.UserId) as Author  from Users 
+                            select Message.MessageId,Message.Date,Message.Subject,UsersMessagesMapped.IsRead,UsersMessagesMapped.PlaceHolderId,UsersMessagesMapped.IsStarred,(select UserName from Users where Messages.AuthorId=Users.UserId) as Author  from Users 
                             inner join Users_Messages_Mapped on Users.UserId=Users_Messages_Mapped.UserId
                             inner join Message on Users_Messages_Mapped.MessageId=Message.MessageId
                             where Users.UserId=@Id";
+
                     cmd.Parameters.AddWithValue("@Id", id);
                     conn.Open();
                     try
@@ -38,7 +39,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
                         while (dataReader.Read())
                         {
                             m = new Message();
-                            m.MessageId = Int32.Parse(dataReader["MessageId"].ToString());
+                            m.MessageId = int.Parse(dataReader["MessageId"].ToString());
                             m.Date = (DateTime)dataReader["Date"];
                             m.Subject = dataReader["Subject"].ToString();
                             m.IsRead = (bool)dataReader["IsRead"];
@@ -50,7 +51,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
                     }
                     catch (Exception ex)
                     {
-                        throw;
+                        return null;
                     }
                 }
             }
@@ -90,6 +91,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
                     {
                         throw;
                     }
+
                     return mb;
                 }
             }
