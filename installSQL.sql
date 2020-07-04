@@ -11,7 +11,7 @@ CREATE TABLE [Users] (
 	[UserId] int CONSTRAINT PK_UserId PRIMARY KEY IDENTITY(1,1),
 	[UserName] nvarchar(50) NOT NULL,
 	[UserLogin] nvarchar(50) NOT NULL UNIQUE,
-	[PasswordHash] nvarchar(50) NOT NULL,
+	[PasswordHash] nvarchar(MAX) NOT NULL,
 	[RoleId] int NOT NULL,
 	CONSTRAINT FK_Users_To_Roles FOREIGN KEY ([RoleId]) REFERENCES Roles([RoleId]),
 );
@@ -44,7 +44,7 @@ CREATE TABLE [UsersMessagesMapped] (
 
 GO
 CREATE PROCEDURE GetUserByLoginAndPassword
-    (@Login nvarchar(50), @PasswordHash nvarchar(50))
+    (@Login nvarchar(50), @PasswordHash nvarchar(MAX))
 As
 Begin
     select 
@@ -58,3 +58,7 @@ Begin
 End
 
 print('Database created successufuly.')
+
+INSERT INTO [Roles] VALUES ('User')
+
+print('Initial data created successufuly.')

@@ -8,12 +8,12 @@ namespace DataAccessLayer.DataBaseImpelemtation
 {
     public class MessageRepository : IMessageRepository
     {
+        private readonly IDBContext dBContext;
+
         public MessageRepository(IDBContext dBContext)
         {
             this.dBContext = dBContext;
         }
-
-        private readonly IDBContext dBContext;
 
         public IList<Message> GetMessagesForUser(int id)
         {

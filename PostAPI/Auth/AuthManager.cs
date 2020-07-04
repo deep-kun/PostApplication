@@ -24,14 +24,15 @@ namespace PostAPI.Auth
 
         public AuthentificationResult Authenticate(string userName, string password)
         {
-            var user = this.userService.GetUserByLoginPassword(userName, password);
-
             var result = new AuthentificationResult();
-
-            if (user == null)
+            User user;
+            try
+            {
+                user = this.userService.GetUserByLoginPassword(userName, password);
+            }
+            catch (PostException)
             {
                 result.ErrorMessage = "Invalid user name or password.";
-
                 return result;
             }
 

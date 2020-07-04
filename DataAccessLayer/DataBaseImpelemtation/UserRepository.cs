@@ -8,12 +8,12 @@ namespace DataAccessLayer.DataBaseImpelemtation
 {
     public class UserRepository : IUserRepository
     {
+        private readonly IDBContext dBContext;
+
         public UserRepository(IDBContext dBContext)
         {
             this.dBContext = dBContext;
         }
-
-        private readonly IDBContext dBContext;
 
         public User GetUserByLoginPassword(string login, string password)
         {
@@ -22,22 +22,21 @@ namespace DataAccessLayer.DataBaseImpelemtation
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     User user = null;
-                    cmd.CommandText = "GetUser";
+                    cmd.CommandText = "GetUserByLoginAndPassword";
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@Login", login);
-                    cmd.Parameters.AddWithValue("@Password", password);
+                    cmd.Parameters.AddWithValue("@PasswordHash", password);
                     conn.Open();
                     try
                     {
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         while (dataReader.Read())
                         {
-                            user = new User();
                             user.UserId = int.Parse(dataReader["UserId"].ToString());
                             user.Name = dataReader["UserName"].ToString();
                             user.Login = dataReader["UserLogin"].ToString();
-                            user.PasswordHash = dataReader["PasswordHash"].ToString();
+                            user.PasswordHash = dataReader["Password"].ToString();
                             user.Role = int.Parse(dataReader["RoleId"].ToString());
                         }
                     }
@@ -45,6 +44,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
                     {
                         return null;
                     }
+
                     return user;
                 }
             }
@@ -55,12 +55,12 @@ namespace DataAccessLayer.DataBaseImpelemtation
             using SqlConnection conn = new SqlConnection(dBContext.ConnectionString);
             using (SqlCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = @"insert into Users values(@Name, @Login, @Password, @Role)";
+                cmd.CommandText = @"insert into Users values(@UserName, @UserLogin, @PasswordHash, @RoleId)";
                 conn.Open();
-                cmd.Parameters.AddWithValue("@Name", u.Name);
-                cmd.Parameters.AddWithValue("@Login", u.Login);
-                cmd.Parameters.AddWithValue("@Password", u.PasswordHash);
-                cmd.Parameters.AddWithValue("@Role", u.Role);
+                cmd.Parameters.AddWithValue("@UserName", u.Name);
+                cmd.Parameters.AddWithValue("@UserLogin", u.Login);
+                cmd.Parameters.AddWithValue("@PasswordHash", u.PasswordHash);
+                cmd.Parameters.AddWithValue("@RoleId", u.Role);
 
                 return Convert.ToInt32(cmd.ExecuteScalar());
             }
@@ -75,7 +75,12 @@ namespace DataAccessLayer.DataBaseImpelemtation
                 cmd.Parameters.AddWithValue("@Log", nick);
                 conn.Open();
                 var dataReader = cmd.ExecuteReader();
-                dataReader.Read();
+                
+                if (!dataReader.Read())
+                {
+                    return null;
+                }
+
                 var user = new User();
                 user.UserId = int.Parse(dataReader["UserId"].ToString());
                 user.Name = dataReader["UserName"].ToString();

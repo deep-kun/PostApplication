@@ -17,6 +17,7 @@ import { MessageDetailsComponent } from './post/message-details/message-details.
 import { MessageCreateComponent } from './post/message-create/message-create.component';
 import { RegistrationComponent } from './authentication/registration/registration.component';
 import { AuthenticationService } from './services/authentication.service';
+import { ErrorInterceptorService } from './services/error-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { AuthenticationService } from './services/authentication.service';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     AuthenticationService 
   ],
   bootstrap: [AppComponent]

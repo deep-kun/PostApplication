@@ -17,6 +17,12 @@ namespace BusinessLayer.Abstraction
         public User GetUserByLogin(string login)
         {
             var dataBaseUser = userRepository.GetUserByLogin(login);
+
+            if (dataBaseUser is null)
+            {
+                return null;
+            }
+
             return new User { 
                 Login = login,
                 Name = dataBaseUser.Name,
