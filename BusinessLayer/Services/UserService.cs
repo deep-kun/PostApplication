@@ -25,8 +25,8 @@ namespace BusinessLayer.Abstraction
 
             return new User { 
                 Login = login,
-                Name = dataBaseUser.Name,
-                Role = dataBaseUser.Role,
+                Name = dataBaseUser.UserName,
+                Role = dataBaseUser.RoleId,
                 UserId = dataBaseUser.UserId };
         }
 
@@ -42,8 +42,8 @@ namespace BusinessLayer.Abstraction
             return new User
             {
                 Login = login,
-                Name = dataBaseUser.Name,
-                Role = dataBaseUser.Role,
+                Name = dataBaseUser.UserName,
+                Role = dataBaseUser.RoleId,
                 UserId = dataBaseUser.UserId
             };
         }
@@ -56,12 +56,12 @@ namespace BusinessLayer.Abstraction
                 throw new AlredyExistsException(user.Login);
             }
 
-            return userRepository.RegisterUser(new DataAccessLayer.Model.User
+            return userRepository.RegisterUser(new DataAccessLayer.PostService.User
             {
-                Login = user.Login,
+                UserLogin= user.Login,
                 PasswordHash = ComputeSha256Hash(user.Password),
-                Name = user.Name,
-                Role = user.Role
+                UserName = user.Name,
+                RoleId = user.Role
             });
         }
 

@@ -23,9 +23,9 @@ export class MessageCreateComponent implements OnInit {
 
     this.http.post<any>(environment.apiUrl + 'api/Mail/send', this.model).subscribe(res => {
       this.router.navigate(['messages']);
-    }, error => {
-      this.error = error.error;
-      console.error(error);
+    },
+     error => {
+       this.error = error;
     });
 }
 }

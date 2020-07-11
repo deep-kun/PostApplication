@@ -42,23 +42,10 @@ CREATE TABLE [UsersMessagesMapped] (
 	CONSTRAINT FK_User_Messages_Mappe_To_MessagePlaceHolders FOREIGN KEY ([PlaceHolderId]) REFERENCES [MessagePlaceHolders] ([PlaceHolderId])
 );
 
-GO
-CREATE PROCEDURE GetUserByLoginAndPassword
-    (@Login nvarchar(50), @PasswordHash nvarchar(MAX))
-As
-Begin
-    select 
-	[UserId],
-	[UserName], 
-	[UserId],
-	[UserLogin],
-	[PasswordHash],
-	[RoleId] from Users u
-		where @Login=u.UserLogin and @PasswordHash=u.PasswordHash
-End
-
 print('Database created successufuly.')
 
 INSERT INTO [Roles] VALUES ('User')
+
+INSERT INTO [MessagePlaceHolders] VALUES ('Inbox')
 
 print('Initial data created successufuly.')

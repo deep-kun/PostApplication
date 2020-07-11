@@ -6,8 +6,10 @@ using System.Text;
 using DataAccessLayer;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Model;
+using DataAccessLayer.PostService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PostAPI.Model;
 
 namespace PostAPI.Controllers
 {
@@ -53,11 +55,11 @@ namespace PostAPI.Controllers
         // POST: api/Mail
         [Route("send")]
         [HttpPost]
-        public IActionResult Post([FromBody]SendedMessage smv)
+        public IActionResult Post([FromBody]SentMessage smv)
         {
             if (!IsValid(smv, out var erros))
             {
-                return BadRequest(erros);
+                return BadRequest(new BadRequestResponseDto { ErrorMessage = erros });
             }
 
             var claimsIdentity = User.Identity as ClaimsIdentity;
@@ -76,15 +78,19 @@ namespace PostAPI.Controllers
             return Ok();
         }
 
-        private bool IsValid(SendedMessage sendedMessage, out string errors)
+        private bool IsValid(SentMessage sentMessage, out string errors)
         {
             var valid = true;
             errors = "";
-            if (this.userRepository.GetUserByLogin(sendedMessage.Receiver) != null)
+            var user = this.userRepository.GetUserByLogin(sentMessage.Receiver);
+
+            if (user == null)
             {
-                errors = $"User {sendedMessage.Receiver} not found.";
+                errors = $"User {sentMessage.Receiver} not found.";
                 return false;
             }
+
+            sentMessage.ReceiverId = user.UserId;
 
             return valid;
         }

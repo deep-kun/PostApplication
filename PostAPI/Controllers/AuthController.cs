@@ -32,7 +32,7 @@ namespace PostAPI.Controllers
 
             return authentificationResult.IsSuccess
                   ? Ok(new { authentificationResult.Token })
-                  : (IActionResult)BadRequest(new { authentificationResult.ErrorMessage });
+                  : (IActionResult)BadRequest(new BadRequestResponseDto { ErrorMessage = authentificationResult.ErrorMessage });
         }
 
         [AllowAnonymous]
@@ -42,7 +42,7 @@ namespace PostAPI.Controllers
         {
             if (!IsValid(userView, out var error))
             {
-                return BadRequest(error);
+                return BadRequest(new BadRequestResponseDto { ErrorMessage = error });
             }
             var u = new User
             {
@@ -70,7 +70,7 @@ namespace PostAPI.Controllers
         {
             var valid = true;
             errors = "";
-            if (this.userService.GetUserByLogin(user.Login) != null)
+            if (this.userService.GetUserByLogin(user.Login) == null)
             {
                 errors = $"{user.Login} is already taken.";
                 return false;

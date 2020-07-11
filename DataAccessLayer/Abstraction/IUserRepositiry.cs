@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Model;
+﻿using DataAccessLayer.PostService;
 
 namespace DataAccessLayer.Abstraction
 {

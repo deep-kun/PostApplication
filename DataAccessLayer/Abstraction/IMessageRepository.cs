@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Model;
+using DataAccessLayer.PostService;
 using System.Collections.Generic;
 
 namespace DataAccessLayer.Abstraction
@@ -8,7 +9,7 @@ namespace DataAccessLayer.Abstraction
         MessageBody GetMessageById(int id);
         IList<Message> GetMessagesForUser(int id);
         void RemoveMsg(int id);
-        void SendMessage(SendedMessage sentMessage);
+        void SendMessage(SentMessage sentMessage);
         void SetMessageRead(int id);
     }
 }

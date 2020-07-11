@@ -1,95 +1,35 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using DataAccessLayer.Abstraction;
-using DataAccessLayer.Model;
+using DataAccessLayer.PostService;
 
 namespace DataAccessLayer.DataBaseImpelemtation
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IDBContext dBContext;
+        private readonly PostServiceContext postServiceContext;
 
-        public UserRepository(IDBContext dBContext)
+        public UserRepository(PostServiceContext postServiceContext)
         {
-            this.dBContext = dBContext;
+            this.postServiceContext = postServiceContext;
         }
 
-        public User GetUserByLoginPassword(string login, string password)
+        public User GetUserByLoginPassword(string login, string passwordHash)
         {
-            using (SqlConnection conn = new SqlConnection(dBContext.ConnectionString))
-            {
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    User user = null;
-                    cmd.CommandText = "GetUserByLoginAndPassword";
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@Login", login);
-                    cmd.Parameters.AddWithValue("@PasswordHash", password);
-                    conn.Open();
-                    try
-                    {
-                        SqlDataReader dataReader = cmd.ExecuteReader();
-                        while (dataReader.Read())
-                        {
-                            user.UserId = int.Parse(dataReader["UserId"].ToString());
-                            user.Name = dataReader["UserName"].ToString();
-                            user.Login = dataReader["UserLogin"].ToString();
-                            user.PasswordHash = dataReader["Password"].ToString();
-                            user.Role = int.Parse(dataReader["RoleId"].ToString());
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        return null;
-                    }
-
-                    return user;
-                }
-            }
+            return this.postServiceContext.Users.Where(u => u.UserLogin.Equals(login) && u.PasswordHash.Equals(passwordHash)).SingleOrDefault();
         }
 
         public int RegisterUser(User u)
         {
-            using SqlConnection conn = new SqlConnection(dBContext.ConnectionString);
-            using (SqlCommand cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = @"insert into Users values(@UserName, @UserLogin, @PasswordHash, @RoleId)";
-                conn.Open();
-                cmd.Parameters.AddWithValue("@UserName", u.Name);
-                cmd.Parameters.AddWithValue("@UserLogin", u.Login);
-                cmd.Parameters.AddWithValue("@PasswordHash", u.PasswordHash);
-                cmd.Parameters.AddWithValue("@RoleId", u.Role);
-
-                return Convert.ToInt32(cmd.ExecuteScalar());
-            }
+            this.postServiceContext.Users.Add(u);
+            return this.postServiceContext.SaveChanges();
         }
 
         public User GetUserByLogin(string nick)
         {
-            using SqlConnection conn = new SqlConnection(dBContext.ConnectionString);
-            using (SqlCommand cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = @"select * from users where UserLogin = @Log";
-                cmd.Parameters.AddWithValue("@Log", nick);
-                conn.Open();
-                var dataReader = cmd.ExecuteReader();
-                
-                if (!dataReader.Read())
-                {
-                    return null;
-                }
-
-                var user = new User();
-                user.UserId = int.Parse(dataReader["UserId"].ToString());
-                user.Name = dataReader["UserName"].ToString();
-                user.Login = dataReader["UserLogin"].ToString();
-                user.PasswordHash = dataReader["Password"].ToString();
-                user.Role = int.Parse(dataReader["RoleId"].ToString());
-
-                return user;
-            }
+            return this.postServiceContext.Users.Where(u => u.UserLogin.Equals(nick)).SingleOrDefault();
         }
     }
 }
