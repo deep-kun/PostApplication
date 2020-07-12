@@ -70,7 +70,7 @@ namespace PostAPI.Controllers
         {
             var valid = true;
             errors = "";
-            if (this.userService.GetUserByLogin(user.Login) == null)
+            if (this.userService.GetUserByLogin(user.Login) != null)
             {
                 errors = $"{user.Login} is already taken.";
                 return false;

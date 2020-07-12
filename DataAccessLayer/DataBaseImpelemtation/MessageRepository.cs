@@ -42,7 +42,8 @@ namespace DataAccessLayer.DataBaseImpelemtation
                 Body = loadedMessage.Body,
                 Date = loadedMessage.SentDate.Date,
                 MessageId = loadedMessage.MessageId,
-                Subject = loadedMessage.Subject
+                Subject = loadedMessage.Subject,
+                ReceiverId = loadedMessage.
             };
 
             return result;
@@ -67,7 +68,8 @@ namespace DataAccessLayer.DataBaseImpelemtation
             };
 
             this.postServiceContext.Messages.Add(newMessage);
-
+            this.postServiceContext.SaveChanges();
+            
             var mappedMessage = new UsersMessagesMapped
             {
                 IsRead = false,
