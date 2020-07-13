@@ -41,13 +41,9 @@ namespace PostAPI.Controllers
         public MessageBody Get(int id)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            int uid = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var msg = messageRepository.GetMessageById(id);
-            if (msg.ReceiverId != uid)
-            {
-                throw new NullReferenceException();
-                ///return View("Error");
-            }
+            int userId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var msg = messageRepository.GetMessageById(id, userId);
+
             messageRepository.SetMessageRead(id);
             return msg;
         }

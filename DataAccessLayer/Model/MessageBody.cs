@@ -13,6 +13,5 @@ namespace DataAccessLayer.Model
         public DateTime Date { get; set; }
         public string Body { get; set; }
         public string Author { get; set; }
-        public int ReceiverId { get; set; }  
     }
 }

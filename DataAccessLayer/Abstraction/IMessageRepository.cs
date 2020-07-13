@@ -6,7 +6,7 @@ namespace DataAccessLayer.Abstraction
 {
     public interface IMessageRepository
     {
-        MessageBody GetMessageById(int id);
+        MessageBody GetMessageById(int messageId, int userId);
         IList<Message> GetMessagesForUser(int id);
         void RemoveMsg(int id);
         void SendMessage(SentMessage sentMessage);

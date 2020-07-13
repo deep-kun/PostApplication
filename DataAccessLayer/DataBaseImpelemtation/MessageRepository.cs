@@ -24,9 +24,15 @@ namespace DataAccessLayer.DataBaseImpelemtation
             return this.postServiceContext.UsersMessagesMappeds.Where(mp => mp.UserId == id).Select(umm => umm.Message).ToList();
         }
 
-        public MessageBody GetMessageById(int id)
+        public MessageBody GetMessageById(int messageId,int userId)
         {
-            var loadedMessage = this.postServiceContext.Messages.Where(m => m.MessageId == id)
+            var loadedMessage = this.postServiceContext.Messages.Where(m => m.MessageId == messageId)
+                .Join(
+                    this.postServiceContext.UsersMessagesMappeds,
+                    o => o.MessageId,
+                    i => i.MessageId,
+                    (o, i) => o
+                    )
                 .Include("Author")
                 .Include("UsersMessagesMappeds")
                 .FirstOrDefault();
@@ -43,7 +49,6 @@ namespace DataAccessLayer.DataBaseImpelemtation
                 Date = loadedMessage.SentDate.Date,
                 MessageId = loadedMessage.MessageId,
                 Subject = loadedMessage.Subject,
-                ReceiverId = loadedMessage.
             };
 
             return result;
