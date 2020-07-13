@@ -1,26 +1,30 @@
-<div class="container">
-  <h1>Authentication works!</h1>
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+          <div class="form-group">
+            <label for="login">Login</label>
+            <input type="text" class="form-control" id="login" required [(ngModel)]="model.login" name="login" #login="ngModel">
+            <div [hidden]="login.valid || !login.touched" class="bg-danger">
+              Login is required
+            </div>
+          </div>
 
-  <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-  <form (ngSubmit)="onSubmit()" #userForm="ngForm">
-    <div class="form-group">
-      <label for="login">Login</label>
-      <input type="text" class="form-control" id="login" required [(ngModel)]="model.login" name="login" #login="ngModel">
-      <div [hidden]="login.valid || !login.touched" class="bg-danger">
-        Login is required
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" required [(ngModel)]="model.password" name="password" #password="ngModel">
+            <div [hidden]="password.valid || !password.touched" class="bg-danger">
+              Password is required
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">
+              <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
+            Submit</button>
+        </form>
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" required [(ngModel)]="model.password" name="password" #password="ngModel">
-      <div [hidden]="password.valid || !password.touched" class="bg-danger">
-        Password is required
-      </div>
-    </div>
-
-    <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">
-        <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
-      Submit</button>
-  </form>
+  </div>
 </div>
