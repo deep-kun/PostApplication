@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.PostService;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.DataBaseImpelemtation
 {
@@ -18,7 +19,10 @@ namespace DataAccessLayer.DataBaseImpelemtation
 
         public User GetUserByLoginPassword(string login, string passwordHash)
         {
-            return this.postServiceContext.Users.Where(u => u.UserLogin.Equals(login) && u.PasswordHash.Equals(passwordHash)).SingleOrDefault();
+            return this.postServiceContext.Users
+                .Where(u => u.UserLogin.Equals(login) && u.PasswordHash.Equals(passwordHash))
+                .AsNoTracking()
+                .SingleOrDefault();
         }
 
         public int RegisterUser(User u)
@@ -29,7 +33,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
 
         public User GetUserByLogin(string nick)
         {
-            return this.postServiceContext.Users.Where(u => u.UserLogin.Equals(nick)).SingleOrDefault();
+            return this.postServiceContext.Users.Where(u => u.UserLogin.Equals(nick)).AsNoTracking().SingleOrDefault();
         }
     }
 }

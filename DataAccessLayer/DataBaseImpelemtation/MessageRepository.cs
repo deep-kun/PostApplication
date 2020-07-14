@@ -33,8 +33,9 @@ namespace DataAccessLayer.DataBaseImpelemtation
                     i => i.MessageId,
                     (o, i) => o
                     )
-                .Include("Author")
-                .Include("UsersMessagesMappeds")
+                .Include(t => t.Author)
+                .Include(um => um.UsersMessagesMappeds)
+                .AsNoTracking()
                 .FirstOrDefault();
 
             if (loadedMessage is null)
