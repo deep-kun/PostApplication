@@ -2,7 +2,6 @@
 using AutoMapper;
 using BusinessLayer.Abstraction;
 using BusinessLayer.Model;
-using DataAccessLayer.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostAPI.Model;

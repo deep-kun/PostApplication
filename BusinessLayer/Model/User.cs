@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BusinessLayer.Model
+﻿namespace BusinessLayer.Model
 {
     public class User
     {
@@ -10,6 +6,6 @@ namespace BusinessLayer.Model
         public string Name { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public int Role { get; set; }
+        public Roles Role { get; set; }
     }
 }

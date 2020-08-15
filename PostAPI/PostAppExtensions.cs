@@ -48,6 +48,8 @@ namespace PostAPI
                     };
                 });
 
+            services.AddAuthorization();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSpaStaticFiles(configuration =>
             {

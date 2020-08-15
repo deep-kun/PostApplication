@@ -23,7 +23,7 @@ namespace PostAPI.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("authenticate")]
-        public IActionResult Authenticate([FromBody]UserDto userInput)
+        public IActionResult Authenticate([FromBody] UserDto userInput)
         {
             var authentificationResult = this.authManager.Authenticate(userInput.Login, userInput.Password);
 
@@ -35,18 +35,18 @@ namespace PostAPI.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("reg")]
-        public IActionResult RegActionResult([FromBody]UserDto userView)
+        public IActionResult RegActionResult([FromBody] UserDto userView)
         {
+            var u = new User
+            {
+                Login = userView.Login,
+                Name = userView.Name,
+                Password = userView.Password,
+                Role = Roles.User
+            };
+
             try
             {
-                var u = new User
-                {
-                    Login = userView.Login,
-                    Name = userView.Name,
-                    Password = userView.Password,
-                    Role = 1
-                };
-
                 this.userService.RegisterUser(u);
 
                 var authentificationResult = this.authManager.Authenticate(userView.Login, userView.Password);

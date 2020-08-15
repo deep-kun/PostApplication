@@ -27,4 +27,12 @@ namespace BusinessLayer.Model
         {
         }
     }
+
+    public class NotEnoughRightsException : PostException
+    {
+        public NotEnoughRightsException(string actionName)
+            : base($"Not enoght right to do {actionName}.")
+        {
+        }
+    }
 }

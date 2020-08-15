@@ -45,6 +45,7 @@ CREATE TABLE [UsersMessagesMapped] (
 print('Database created successufuly.')
 
 INSERT INTO [Roles] VALUES ('User')
+INSERT INTO [Roles] VALUES ('Admin')
 
 INSERT INTO [MessagePlaceHolders] VALUES ('Inbox')
 

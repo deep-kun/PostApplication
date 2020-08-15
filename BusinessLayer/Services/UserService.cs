@@ -27,7 +27,7 @@ namespace BusinessLayer.Services
             return new User { 
                 Login = login,
                 Name = dataBaseUser.UserName,
-                Role = dataBaseUser.RoleId,
+                Role = (Roles)dataBaseUser.RoleId,
                 UserId = dataBaseUser.UserId };
         }
 
@@ -44,7 +44,7 @@ namespace BusinessLayer.Services
             {
                 Login = login,
                 Name = dataBaseUser.UserName,
-                Role = dataBaseUser.RoleId,
+                Role = (Roles)dataBaseUser.RoleId,
                 UserId = dataBaseUser.UserId
             };
         }
@@ -56,13 +56,13 @@ namespace BusinessLayer.Services
             {
                 throw new AlredyExistsException(user.Login);
             }
-
+          
             return userRepository.RegisterUser(new DataAccessLayer.PostService.User
             {
                 UserLogin= user.Login,
                 PasswordHash = ComputeSha256Hash(user.Password),
                 UserName = user.Name,
-                RoleId = user.Role
+                RoleId = (int)user.Role
             });
         }
 
