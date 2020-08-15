@@ -55,12 +55,21 @@ namespace DataAccessLayer.DataBaseImpelemtation
             return result;
         }
 
-        public void SetMessageRead(int id)
+        public void SetMessageRead(int messageId, int userId)
         {
+            var message = this.postServiceContext.UsersMessagesMappeds.FirstOrDefault(t => t.MessageId == messageId && t.UserId == userId);
+
+            message.IsRead = true;
+
+            this.postServiceContext.SaveChanges();
         }
 
-        public void RemoveMsg(int id)
+        public void RemoveMsg(int messageId, int userId)
         {
+            var message = this.postServiceContext.UsersMessagesMappeds.FirstOrDefault(t => t.MessageId == messageId && t.UserId == userId);
+
+            this.postServiceContext.UsersMessagesMappeds.Remove(message);
+            this.postServiceContext.SaveChanges();
         }
 
         public void SendMessage(SentMessage sentMessage)

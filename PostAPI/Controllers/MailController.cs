@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using DataAccessLayer;
+﻿using System.Collections.Generic;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Model;
 using DataAccessLayer.PostService;
@@ -15,7 +10,7 @@ namespace PostAPI.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class MailController : Controller
+    public class MailController : PostControllerBase
     {
         private readonly IMessageRepository messageRepository;
         private readonly IUserRepository userRepository;
@@ -30,21 +25,19 @@ namespace PostAPI.Controllers
         [HttpGet]
         public IEnumerable<Message> Get()
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            int id = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return messageRepository.GetMessagesForUser(id);
+            var currentUserId = this.GetUserId();
+            return messageRepository.GetMessagesForUser(currentUserId);
         }
 
-        // GET: api/Mail/5
         [Route("{id}")]
         [HttpGet]
         public MessageBody Get(int id)
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            int userId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var msg = messageRepository.GetMessageById(id, userId);
+            var currentUserId = this.GetUserId();
+            var msg = messageRepository.GetMessageById(id, currentUserId);
 
-            messageRepository.SetMessageRead(id);
+            messageRepository.SetMessageRead(id, currentUserId);
+
             return msg;
         }
 
@@ -58,19 +51,20 @@ namespace PostAPI.Controllers
                 return BadRequest(new BadRequestResponseDto { ErrorMessage = erros });
             }
 
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var id = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            smv.AuthorId = id;
+            var currentUserId = this.GetUserId();
+
+            smv.AuthorId = currentUserId;
             messageRepository.SendMessage(smv);
             return Ok();
         }
 
-        // DELETE: api/Mail/5
         [Route("{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            messageRepository.RemoveMsg(id);
+            var currentUserId = this.GetUserId();
+
+            messageRepository.RemoveMsg(id, currentUserId);
             return Ok();
         }
 

@@ -1,14 +1,11 @@
 ﻿using System.Text;
 using BusinessLayer.Abstraction;
-using DataAccessLayer;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.DataBaseImpelemtation;
-using DataAccessLayer.Model;
 using DataAccessLayer.PostService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
