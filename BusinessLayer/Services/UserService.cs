@@ -2,8 +2,9 @@
 using BusinessLayer.Model;
 using System.Security.Cryptography;
 using System.Text;
+using BusinessLayer.Abstraction;
 
-namespace BusinessLayer.Abstraction
+namespace BusinessLayer.Services
 {
     public class UserService : IUserService
     {

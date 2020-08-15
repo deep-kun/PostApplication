@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using BusinessLayer.Abstraction;
+using BusinessLayer.Services;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.DataBaseImpelemtation;
 using DataAccessLayer.PostService;
@@ -24,6 +25,7 @@ namespace PostAPI
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<IAuthManager, AuthManager>();
+            services.AddTransient<IMessageService, MessageService>();
 
             services.AddDbContext<PostServiceContext>(options => options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]));
 

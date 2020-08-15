@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BusinessLayer.Abstraction;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Model;
 using DataAccessLayer.PostService;
@@ -14,10 +15,13 @@ namespace PostAPI.Controllers
     {
         private readonly IMessageRepository messageRepository;
         private readonly IUserRepository userRepository;
-        public MailController(IMessageRepository messageRepository, IUserRepository userRepository)
+        private readonly IMessageService messageService;
+
+        public MailController(IMessageRepository messageRepository, IUserRepository userRepository, IMessageService messageService)
         {
             this.messageRepository = messageRepository;
             this.userRepository = userRepository;
+            this.messageService = messageService;
         }
 
         // GET: api/Mail
@@ -31,14 +35,16 @@ namespace PostAPI.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public MessageBody Get(int id)
+        public BusinessLayer.Model.Message Get(int id)
         {
             var currentUserId = this.GetUserId();
             var msg = messageRepository.GetMessageById(id, currentUserId);
 
-            messageRepository.SetMessageRead(id, currentUserId);
+            //
 
-            return msg;
+            var returnMsg = this.messageService.GetMessageById(id, currentUserId);
+
+            return returnMsg;
         }
 
         // POST: api/Mail
