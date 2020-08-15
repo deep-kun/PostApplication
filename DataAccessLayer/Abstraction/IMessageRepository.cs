@@ -8,8 +8,8 @@ namespace DataAccessLayer.Abstraction
     {
         MessageBody GetMessageById(int messageId, int userId);
         IList<Message> GetMessagesForUser(int id);
-        void RemoveMsg(int id, int userId);
-        void SendMessage(SentMessage sentMessage);
+        void RemoveMessage(int id, int userId);
+        void SendMessage(SendMessageCommandDb sentMessage);
         void SetMessageRead(int id, int userId);
     }
 }

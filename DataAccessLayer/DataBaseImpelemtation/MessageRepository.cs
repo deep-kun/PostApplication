@@ -19,9 +19,9 @@ namespace DataAccessLayer.DataBaseImpelemtation
             this.postServiceContext = postServiceContext;
         }
 
-        public IList<Message> GetMessagesForUser(int id)
+        public IList<Message> GetMessagesForUser(int userId)
         {
-            return this.postServiceContext.UsersMessagesMappeds.Where(mp => mp.UserId == id).Select(umm => umm.Message).ToList();
+            return this.postServiceContext.UsersMessagesMappeds.Where(mp => mp.UserId == userId).Select(umm => umm.Message).ToList();
         }
 
         public MessageBody GetMessageById(int messageId,int userId)
@@ -31,8 +31,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
                     this.postServiceContext.UsersMessagesMappeds,
                     o => o.MessageId,
                     i => i.MessageId,
-                    (o, i) => o
-                    )
+                    (o, i) => o)
                 .Include(t => t.Author)
                 .Include(um => um.UsersMessagesMappeds)
                 .AsNoTracking()
@@ -64,7 +63,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
             this.postServiceContext.SaveChanges();
         }
 
-        public void RemoveMsg(int messageId, int userId)
+        public void RemoveMessage(int messageId, int userId)
         {
             var message = this.postServiceContext.UsersMessagesMappeds.FirstOrDefault(t => t.MessageId == messageId && t.UserId == userId);
 
@@ -72,7 +71,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
             this.postServiceContext.SaveChanges();
         }
 
-        public void SendMessage(SentMessage sentMessage)
+        public void SendMessage(SendMessageCommandDb sentMessage)
         {
             var newMessage = new Message
             {

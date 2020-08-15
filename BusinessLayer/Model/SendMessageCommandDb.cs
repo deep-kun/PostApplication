@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAccessLayer.PostService
+namespace BusinessLayer.Model
 {
-    public class SentMessage
+    public class SendMessageCommandDb
     {
         public string Subject { get; set; }
+
         public string Body { get; set; }
-        public int ReceiverId { get; set; }
-        public string Receiver { get; set; }
+
         public int AuthorId { get; set; }
+
+        public User Revicer { get; set; }
     }
 }

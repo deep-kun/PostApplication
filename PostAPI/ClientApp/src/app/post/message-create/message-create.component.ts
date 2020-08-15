@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SendedMessage } from 'src/app/model/sendedMessage';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';

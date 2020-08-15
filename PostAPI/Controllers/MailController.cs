@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using AutoMapper;
 using BusinessLayer.Abstraction;
+using BusinessLayer.Model;
 using DataAccessLayer.Abstraction;
-using DataAccessLayer.Model;
-using DataAccessLayer.PostService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostAPI.Model;
+using PostAPI.Model.Mapping;
 
 namespace PostAPI.Controllers
 {
@@ -13,54 +14,53 @@ namespace PostAPI.Controllers
     [Authorize]
     public class MailController : PostControllerBase
     {
-        private readonly IMessageRepository messageRepository;
-        private readonly IUserRepository userRepository;
         private readonly IMessageService messageService;
+        private readonly IMapper mapper;
 
-        public MailController(IMessageRepository messageRepository, IUserRepository userRepository, IMessageService messageService)
+        public MailController(IMessageService messageService)
         {
-            this.messageRepository = messageRepository;
-            this.userRepository = userRepository;
             this.messageService = messageService;
+            this.mapper = new MapperConfiguration(t => t.AddProfile<MessageMappingProfile>()).CreateMapper();
         }
 
         // GET: api/Mail
         [Route("")]
         [HttpGet]
-        public IEnumerable<Message> Get()
+        public IEnumerable<MessageDto> Get()
         {
             var currentUserId = this.GetUserId();
-            return messageRepository.GetMessagesForUser(currentUserId);
+
+            var messages = messageService.GetMessagesForUser(currentUserId);
+
+            return this.mapper.Map<IEnumerable<MessageDto>>(messages);
         }
 
         [Route("{id}")]
         [HttpGet]
-        public BusinessLayer.Model.Message Get(int id)
+        public MessageDto Get(int id)
         {
             var currentUserId = this.GetUserId();
-            var msg = messageRepository.GetMessageById(id, currentUserId);
-
-            //
-
             var returnMsg = this.messageService.GetMessageById(id, currentUserId);
 
-            return returnMsg;
+            return this.mapper.Map<MessageDto>(returnMsg);
         }
 
         // POST: api/Mail
         [Route("send")]
         [HttpPost]
-        public IActionResult Post([FromBody]SentMessage smv)
+        public IActionResult Post([FromBody]SendMessageCommandDto message)
         {
-            if (!IsValid(smv, out var erros))
+            var command = this.mapper.Map<SendMessageCommand>(message);
+            command.AuthorId = this.GetUserId();
+            try
             {
-                return BadRequest(new BadRequestResponseDto { ErrorMessage = erros });
+                this.messageService.SendMessage(command);
+            }
+            catch (PostException ex)
+            {
+                return BadRequest(new BadRequestResponseDto { ErrorMessage = ex.Message });
             }
 
-            var currentUserId = this.GetUserId();
-
-            smv.AuthorId = currentUserId;
-            messageRepository.SendMessage(smv);
             return Ok();
         }
 
@@ -70,25 +70,8 @@ namespace PostAPI.Controllers
         {
             var currentUserId = this.GetUserId();
 
-            messageRepository.RemoveMsg(id, currentUserId);
+            this.messageService.DeleteMessage(id, currentUserId);
             return Ok();
-        }
-
-        private bool IsValid(SentMessage sentMessage, out string errors)
-        {
-            var valid = true;
-            errors = "";
-            var user = this.userRepository.GetUserByLogin(sentMessage.Receiver);
-
-            if (user == null)
-            {
-                errors = $"User {sentMessage.Receiver} not found.";
-                return false;
-            }
-
-            sentMessage.ReceiverId = user.UserId;
-
-            return valid;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace PostAPI.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController : ControllerBase
+    public class AuthController : PostControllerBase
     {
         private readonly IAuthManager authManager;
         private readonly IUserService userService;
