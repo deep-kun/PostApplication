@@ -26,8 +26,6 @@ login(login: string, password: string) {
     return this.http.post<any>(environment.apiUrl + `api/auth/authenticate`, { login, password })
         .pipe(map(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            console.log(JSON.stringify(user));
-            console.log(user.token);
             localStorage.removeItem('currentUser');
             localStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
@@ -39,8 +37,6 @@ register(login: string, password: string, name: string){
   return this.http.post<any>(environment.apiUrl + `api/auth/reg`, { login, password, name })
   .pipe(map(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      console.log(JSON.stringify(user));
-      console.log(user.token);
       localStorage.removeItem('currentUser');
       localStorage.setItem('currentUser', JSON.stringify(user));
       this.currentUserSubject.next(user);

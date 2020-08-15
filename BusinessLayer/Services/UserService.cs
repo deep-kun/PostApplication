@@ -34,7 +34,7 @@ namespace BusinessLayer.Services
 
             if (dataBaseUser is null)
             {
-                return null;
+                throw new NotFoundExeption(login);
             }
 
             return this.mapper.Map<User>(dataBaseUser);

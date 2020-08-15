@@ -29,6 +29,7 @@ namespace PostAPI.Auth
             try
             {
                 user = this.userService.GetUserByLoginPassword(userName, password);
+                result.User = user;
             }
             catch (PostException)
             {

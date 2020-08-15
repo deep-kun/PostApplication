@@ -1,9 +1,11 @@
-﻿using BusinessLayer.Abstraction;
+﻿using AutoMapper;
+using BusinessLayer.Abstraction;
 using BusinessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostAPI.Auth;
 using PostAPI.Model;
+using PostAPI.Model.Mapping;
 
 namespace PostAPI.Controllers
 {
@@ -13,11 +15,13 @@ namespace PostAPI.Controllers
     {
         private readonly IAuthManager authManager;
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
         public AuthController(IAuthManager authManager, IUserService userService)
         {
             this.authManager = authManager;
             this.userService = userService;
+            this.mapper = new MapperConfiguration(t => t.AddProfile<ApiMappingProfile>()).CreateMapper();
         }
 
         [AllowAnonymous]
@@ -28,7 +32,7 @@ namespace PostAPI.Controllers
             var authentificationResult = this.authManager.Authenticate(userInput.Login, userInput.Password);
 
             return authentificationResult.IsSuccess
-                  ? Ok(new { authentificationResult.Token })
+                  ? Ok(new AuthauthenticationResponseDto { Token = authentificationResult.Token, User = this.mapper.Map<UserDto>(authentificationResult.User) })
                   : (IActionResult)BadRequest(new BadRequestResponseDto { ErrorMessage = authentificationResult.ErrorMessage });
         }
 
@@ -51,19 +55,12 @@ namespace PostAPI.Controllers
 
                 var authentificationResult = this.authManager.Authenticate(userView.Login, userView.Password);
 
-                return Ok(new { authentificationResult.Token });
+                return Ok(new AuthauthenticationResponseDto { Token = authentificationResult.Token, User = this.mapper.Map<UserDto>(authentificationResult.User) });
             }
             catch (PostException ex)
             {
                 return BadRequest(new BadRequestResponseDto { ErrorMessage = ex.Message });
             }
-        }
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult Authenticate()
-        {
-            return Ok("you are the best");
         }
     }
 }
