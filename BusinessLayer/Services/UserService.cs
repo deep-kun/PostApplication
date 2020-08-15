@@ -3,16 +3,29 @@ using BusinessLayer.Model;
 using System.Security.Cryptography;
 using System.Text;
 using BusinessLayer.Abstraction;
+using AutoMapper;
+using BusinessLayer.Model.Mapping;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace BusinessLayer.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
+        private readonly IMapper mapper;
 
         public UserService(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
+            this.mapper = new MapperConfiguration(t => t.AddProfile<BusinessMappingProfile>()).CreateMapper();
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            var dataBaseUsers = this.userRepository.GetAll();
+
+            return this.mapper.Map<IEnumerable<User>>(dataBaseUsers);
         }
 
         public User GetUserByLogin(string login)
@@ -24,11 +37,7 @@ namespace BusinessLayer.Services
                 return null;
             }
 
-            return new User { 
-                Login = login,
-                Name = dataBaseUser.UserName,
-                Role = (Roles)dataBaseUser.RoleId,
-                UserId = dataBaseUser.UserId };
+            return this.mapper.Map<User>(dataBaseUser);
         }
 
         public User GetUserByLoginPassword(string login, string password)
@@ -40,13 +49,7 @@ namespace BusinessLayer.Services
                 throw new NotFoundExeption(login);
             }
 
-            return new User
-            {
-                Login = login,
-                Name = dataBaseUser.UserName,
-                Role = (Roles)dataBaseUser.RoleId,
-                UserId = dataBaseUser.UserId
-            };
+            return this.mapper.Map<User>(dataBaseUser);
         }
 
         public int RegisterUser(User user)

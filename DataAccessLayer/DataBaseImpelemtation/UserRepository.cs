@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace DataAccessLayer.DataBaseImpelemtation
         public UserRepository(PostServiceContext postServiceContext)
         {
             this.postServiceContext = postServiceContext;
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            return this.postServiceContext.Users.AsNoTracking().AsEnumerable();
         }
 
         public User GetUserByLoginPassword(string login, string passwordHash)

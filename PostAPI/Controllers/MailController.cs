@@ -19,7 +19,7 @@ namespace PostAPI.Controllers
         public MailController(IMessageService messageService)
         {
             this.messageService = messageService;
-            this.mapper = new MapperConfiguration(t => t.AddProfile<MessageMappingProfile>()).CreateMapper();
+            this.mapper = new MapperConfiguration(t => t.AddProfile<ApiMappingProfile>()).CreateMapper();
         }
 
         // GET: api/Mail

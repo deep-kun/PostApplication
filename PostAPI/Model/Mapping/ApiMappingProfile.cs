@@ -3,9 +3,9 @@ using BusinessLayer.Model;
 
 namespace PostAPI.Model.Mapping
 {
-    public class MessageMappingProfile : Profile
+    public class ApiMappingProfile : Profile
     {
-        public MessageMappingProfile()
+        public ApiMappingProfile()
         {
             this.CreateMap<Message, MessageDto>()
                 .ReverseMap();
@@ -14,6 +14,8 @@ namespace PostAPI.Model.Mapping
 
             this.CreateMap<string, User>()
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src));
+
+            this.CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }
