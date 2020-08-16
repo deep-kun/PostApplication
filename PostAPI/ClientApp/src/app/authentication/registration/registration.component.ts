@@ -12,7 +12,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
-  model = new User('', '', '');
+  model = new User('', '', '', 0);
   submitted = false;
   error = '';
 

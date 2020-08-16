@@ -18,6 +18,7 @@ import { MessageCreateComponent } from './post/message-create/message-create.com
 import { RegistrationComponent } from './authentication/registration/registration.component';
 import { AuthenticationService } from './services/authentication.service';
 import { ErrorInterceptorService } from './services/error-interceptor.service';
+import { UserListComponent } from './administration/user-list/user-list.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ErrorInterceptorService } from './services/error-interceptor.service';
     MessagesComponent,
     MessageDetailsComponent,
     MessageCreateComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,6 +46,7 @@ import { ErrorInterceptorService } from './services/error-interceptor.service';
       { path: 'messages', component: MessagesComponent, canActivate: [AuthGuardService] },
       { path: 'newmsg', component: MessageCreateComponent, canActivate: [AuthGuardService] },
       { path: 'reg', component: RegistrationComponent },
+      { path: 'users', component: UserListComponent, canActivate: [AuthGuardService] },
     ])
   ],
   providers: [

@@ -7,8 +7,10 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
             </button>
             <a class='navbar-brand' [routerLink]='["/"]'>PostAPI</a>
+            <h1 *ngIf ="!showLogin" style="color: aliceblue;">Hi, {{userName}}!</h1>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
@@ -16,6 +18,11 @@
                 <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
                     <a [routerLink]='["/"]' (click)='collapse()'>
                         <span class='glyphicon glyphicon-home'></span> Home
+                    </a>
+                </li>
+                <li [routerLinkActive]='["link-active"]'>
+                    <a [routerLink]='["/users"]' (click)='collapse()' *ngIf ="canManageUsers" >
+                        <span class='glyphicon glyphicon-th-list'></span> User list
                     </a>
                 </li>
                 <li [routerLinkActive]='["link-active"]'>
