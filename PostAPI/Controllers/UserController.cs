@@ -28,11 +28,5 @@ namespace PostAPI.Controllers
             var users = this.userService.GetAll();
             return this.mapper.Map<IEnumerable<UserDto>>(users);
         }
-
-        [HttpGet]
-        public IActionResult Authenticate()
-        {
-            return Ok("you are the best Admin");
-        }
     }
 }
