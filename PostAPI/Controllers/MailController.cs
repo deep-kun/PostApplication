@@ -10,7 +10,7 @@ using PostAPI.Model.Mapping;
 namespace PostAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+   // [Authorize]
     public class MailController : PostControllerBase
     {
         private readonly IMessageService messageService;

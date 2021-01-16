@@ -13,7 +13,8 @@ namespace PostAPI.Controllers
             try
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
-                int id = int.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                int id = int.Parse(claim.Value);
 
                 return id;
             }
