@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstraction;
+using BusinessLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostAPI.Model;
 using PostAPI.Model.Mapping;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PostAPI.Controllers
 {
@@ -19,7 +21,13 @@ namespace PostAPI.Controllers
         public UserController(IUserService userService)
         {
             this.userService = userService;
-            this.mapper = new MapperConfiguration(t => t.AddProfile<ApiMappingProfile>()).CreateMapper();
+            this.mapper = GetMapper<ApiMappingProfile>();
+        }
+
+        [HttpPut]
+        public async Task Update(UserDto user)
+        {
+            await this.userService.UpdateUser(this.mapper.Map<User>(user));
         }
 
         [HttpGet]

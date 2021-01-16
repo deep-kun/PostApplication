@@ -28,6 +28,14 @@ namespace BusinessLayer.Model
         }
     }
 
+    public class InvalidEntityException : PostException
+    {
+        public InvalidEntityException(string entityValue)
+            : base($"Entity '{entityValue}' is invalid.")
+        {
+        }
+    }
+
     public class NotEnoughRightsException : PostException
     {
         public NotEnoughRightsException(string actionName)

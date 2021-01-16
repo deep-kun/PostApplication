@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PostAPI.Model.Mapping;
 
 namespace PostAPI.Controllers
 {
@@ -19,6 +21,11 @@ namespace PostAPI.Controllers
             {
                 throw ex;
             }
+        }
+        
+        protected IMapper GetMapper<T>() where T : Profile, new()
+        {
+            return new MapperConfiguration(t => t.AddProfile<T>()).CreateMapper();
         }
     }
 }

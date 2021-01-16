@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.PostService;
 using Microsoft.EntityFrameworkCore;
@@ -31,10 +31,16 @@ namespace DataAccessLayer.DataBaseImpelemtation
                 .SingleOrDefault();
         }
 
-        public int RegisterUser(User u)
+        public int AddUser(User u)
         {
             this.postServiceContext.Users.Add(u);
             return this.postServiceContext.SaveChanges();
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            this.postServiceContext.Users.Update(user);
+            await this.postServiceContext.SaveChangesAsync();
         }
 
         public User GetUserByLogin(string nick)

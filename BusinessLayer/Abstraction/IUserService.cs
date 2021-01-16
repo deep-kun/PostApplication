@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Model;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Abstraction
 {
@@ -9,5 +10,6 @@ namespace BusinessLayer.Abstraction
         User GetUserByLogin(string login);
         User GetUserByLoginPassword(string login, string password);
         int RegisterUser(User user);
+        Task UpdateUser(User user);
     }
 }

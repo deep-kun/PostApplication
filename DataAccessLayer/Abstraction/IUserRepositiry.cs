@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.PostService;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstraction
 {
@@ -8,6 +9,7 @@ namespace DataAccessLayer.Abstraction
         IEnumerable<User> GetAll();
         User GetUserByLogin(string login);
         User GetUserByLoginPassword(string login, string password);
-        int RegisterUser(User u);
+        int AddUser(User u);
+        Task UpdateUserAsync(User user);
     }
 }

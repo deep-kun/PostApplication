@@ -1,0 +1,5 @@
+Scaffold-DbContext 
+"Data Source=(Local);Initial Catalog=PostService;Integrated Security=yes"
+ Microsoft.EntityFrameworkCore.SqlServer
+ -OutputDir Model 
+ -DataAnnotations

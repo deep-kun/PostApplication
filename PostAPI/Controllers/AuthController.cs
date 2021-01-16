@@ -46,7 +46,7 @@ namespace PostAPI.Controllers
                 Login = userView.Login,
                 Name = userView.Name,
                 Password = userView.Password,
-                Role = Roles.User
+                RoleId = 1
             };
 
             try

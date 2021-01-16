@@ -7,17 +7,22 @@ using AutoMapper;
 using BusinessLayer.Model.Mapping;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace BusinessLayer.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
+        private readonly IRoleRepository roleRepository;
         private readonly IMapper mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
             this.mapper = new MapperConfiguration(t => t.AddProfile<BusinessMappingProfile>()).CreateMapper();
         }
 
@@ -60,13 +65,34 @@ namespace BusinessLayer.Services
                 throw new AlredyExistsException(user.Login);
             }
           
-            return userRepository.RegisterUser(new DataAccessLayer.PostService.User
+            return userRepository.AddUser(new DataAccessLayer.PostService.User
             {
                 UserLogin= user.Login,
                 PasswordHash = ComputeSha256Hash(user.Password),
                 UserName = user.Name,
-                RoleId = (int)user.Role
+                RoleId = user.RoleId
             });
+        }
+
+        public async Task UpdateUser(User user)
+        {
+            if (!(await this.IsUserValid(user)))
+            {
+                throw new InvalidEntityException(user.Login);
+            }
+
+            await this.userRepository.UpdateUserAsync(this.mapper.Map<DataAccessLayer.PostService.User>(user));
+        }
+
+        private async Task<bool> IsUserValid(User user)
+        {
+            var roles = await this.roleRepository.GetAllRolesAsync();
+
+            bool isValid = true;
+
+            isValid &= roles.Select(t => t.RoleId).Any(ri => ri == user.RoleId);
+
+            return isValid;
         }
 
         static string ComputeSha256Hash(string rawData)

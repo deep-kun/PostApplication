@@ -17,7 +17,7 @@ namespace BusinessLayer.Model.Mapping
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.UserLogin))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.RoleId))
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
         }
     }
