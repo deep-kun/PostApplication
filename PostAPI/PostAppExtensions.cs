@@ -7,14 +7,12 @@ using DataAccessLayer.DataBaseImpelemtation;
 using DataAccessLayer.PostService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PostAPI.Auth;
-using Swashbuckle.Swagger;
 
 namespace PostAPI
 {
@@ -34,6 +32,8 @@ namespace PostAPI
 
             services.AddDbContext<PostServiceContext>(options => options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]));
 
+            services.AddControllers();
+
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -52,7 +52,6 @@ namespace PostAPI
                         ValidateAudience = false
                     };
                 });
-
 
             services.AddSwaggerGen(s =>
             {
@@ -89,10 +88,8 @@ namespace PostAPI
 
             });
 
-
             services.AddAuthorization();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwaggerGen();
         }
 
@@ -113,7 +110,7 @@ namespace PostAPI
             app.UseRouting();
 
             app.UseAuthentication();
-           // app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

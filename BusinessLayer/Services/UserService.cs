@@ -5,11 +5,9 @@ using System.Text;
 using BusinessLayer.Abstraction;
 using AutoMapper;
 using BusinessLayer.Model.Mapping;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using System;
 
 namespace BusinessLayer.Services
 {
@@ -35,7 +33,7 @@ namespace BusinessLayer.Services
 
         public User GetUserByLogin(string login)
         {
-            var dataBaseUser = userRepository.GetUserByLogin(login);
+            var dataBaseUser = this.userRepository.GetUserByLogin(login);
 
             if (dataBaseUser is null)
             {
@@ -47,7 +45,7 @@ namespace BusinessLayer.Services
 
         public User GetUserByLoginPassword(string login, string password)
         {
-            var dataBaseUser = userRepository.GetUserByLoginPassword(login, ComputeSha256Hash(password));
+            var dataBaseUser = this.userRepository.GetUserByLoginPassword(login, ComputeSha256Hash(password));
 
             if (dataBaseUser is null)
             {
@@ -59,13 +57,13 @@ namespace BusinessLayer.Services
 
         public int RegisterUser(User user)
         {
-            var dataBaseUser = userRepository.GetUserByLogin(user.Login);
+            var dataBaseUser = this.userRepository.GetUserByLogin(user.Login);
             if (dataBaseUser != null)
             {
                 throw new AlredyExistsException(user.Login);
             }
           
-            return userRepository.AddUser(new DataAccessLayer.PostService.User
+            return this.userRepository.AddUser(new DataAccessLayer.PostService.User
             {
                 UserLogin= user.Login,
                 PasswordHash = ComputeSha256Hash(user.Password),
@@ -98,20 +96,18 @@ namespace BusinessLayer.Services
         static string ComputeSha256Hash(string rawData)
         {
             // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
+            using SHA256 sha256Hash = SHA256.Create();
+            // ComputeHash - returns byte array  
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+            // Convert byte array to a string   
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
             {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-
-                return builder.ToString();
+                builder.Append(bytes[i].ToString("x2"));
             }
+
+            return builder.ToString();
         }
     }
 }

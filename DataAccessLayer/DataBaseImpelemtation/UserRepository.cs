@@ -45,7 +45,7 @@ namespace DataAccessLayer.DataBaseImpelemtation
 
         public User GetUserByLogin(string nick)
         {
-            return this.postServiceContext.Users.Where(u => u.UserLogin.Equals(nick)).AsNoTracking().SingleOrDefault();
+            return this.postServiceContext.Users.Where(u => u.UserLogin.Equals(nick)).AsNoTracking().FirstOrDefault();
         }
     }
 }
